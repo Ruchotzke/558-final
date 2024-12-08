@@ -1,7 +1,7 @@
 import simpy
 
-from Node import Node
-from Packet import Packet
+from src.components.Node import Node
+from src.components.Packet import Packet
 
 
 class Network:

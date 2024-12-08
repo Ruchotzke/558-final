@@ -3,7 +3,9 @@ An implementation of a network node.
 """
 import simpy
 
-from Packet import Packet
+from src.components.Packet import Packet
+from src.components.addressing.EthernetAddr import EthernetAddr
+from src.utilities.Logger import Logger
 
 
 class Node:
@@ -14,6 +16,7 @@ class Node:
         self.env = env
         self.interfaces = []
         self.name = name
+        Logger.instance.log(f'Node {self.name} initialized.')
 
     def start_process(self):
         self.env.process(self.produce())
@@ -34,7 +37,7 @@ class Node:
         :param p:
         :return:
         """
-        print(f'Node {self.name} received a packet at t={self.env.now}')
+        Logger.instance.log(f'Node {self.name} received a packet')
 
     def produce(self):
         while True:
@@ -46,6 +49,6 @@ class Node:
             # Await access to the network
             yield req
 
-            # Push a packet out over the network
-            print(f'Node {self.name} pushed out a packet at {self.env.now}')
-            yield self.env.process(network.send_packet(self, Packet(45.0, "hello")))
+            # Push a packet out over the networks
+            Logger.instance.log(f'Node {self.name} pushed out a packet')
+            yield self.env.process(network.send_packet(self, Packet(45.0, "hello", EthernetAddr())))

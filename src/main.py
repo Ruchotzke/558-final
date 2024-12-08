@@ -1,9 +1,14 @@
 import simpy
 
-from Node import Node
-from Network import Network
+from src.components.Node import Node
+from src.components.Network import Network
+from src.utilities.Logger import Logger
 
 env = simpy.Environment()
+
+# Init the logger
+logger = Logger()
+logger.init_instance(env)
 
 N1 = Node(env, "N1")
 N2 = Node(env, "N2")
