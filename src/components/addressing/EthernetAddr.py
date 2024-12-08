@@ -12,6 +12,9 @@ class EthernetAddr:
             self.bytes = bytes(int(part, 16) for part in addr.split(":"))
 
 
+    def __str__(self):
+        return self.text
+
     def is_broadcast(self):
         return self.bytes == b'\xff\xff\xff\xff\xff\xff'
 

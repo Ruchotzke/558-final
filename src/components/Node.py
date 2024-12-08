@@ -5,6 +5,7 @@ import simpy
 
 from src.components.Packet import Packet
 from src.components.addressing.EthernetAddr import EthernetAddr
+from src.components.stack.NetStack import NetStack
 from src.utilities.Logger import Logger
 
 
@@ -14,35 +15,40 @@ class Node:
     """
     def __init__(self, env: simpy.Environment, name):
         self.env = env
-        self.interfaces = []
         self.name = name
+        self.stack = NetStack(env)
         Logger.instance.log(f'Node {self.name} initialized.')
 
     def start_process(self):
         self.env.process(self.produce())
 
-    def add_interface(self, network, local_addr, global_addr):
+    def add_interface(self, network):
         """
         Add an interface to this node.
         :param network:
         :return:
         """
-        self.interfaces.append(network)
+        self.stack.add_ethernet(EthernetAddr("11:11:11:11:11:11"), network)
         network.register(self)
 
 
-    def recv(self, p: Packet):
+    def recv(self, p: Packet, source_net):
         """
         Receive a packet from the network
         :param p:
         :return:
         """
-        Logger.instance.log(f'Node {self.name} received a packet')
+        # Packet arrived
+        Logger.instance.log(f'Node {self.name} received a packet: pushing to stack')
+
+        # Sort and send to proper interface
+        self.stack.ethers[source_net].queue.put(p)
+
 
     def produce(self):
         while True:
-            yield self.env.timeout(2.0)
-            self.env.process(self.push_packet(self.interfaces[0]))
+            yield self.env.timeout(10.0)
+            self.env.process(self.push_packet(list(self.stack.ethers.keys())[0]))
 
     def push_packet(self, network):
         with network.active.request() as req:

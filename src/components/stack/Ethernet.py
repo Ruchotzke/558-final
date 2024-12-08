@@ -15,6 +15,10 @@ class EthernetLayer:
         self.addr = addr            # Associated Ethernet layer addr
         self.promiscuous = False    # Promiscuous mode (sniffing)
         self.queue = simpy.Store(env)   # The input queue
+        env.process(self.process())
+
+    def enqueue(self, p: Packet):
+        self.queue.put(p)
 
     def process(self):
         while True:

@@ -34,5 +34,5 @@ class Network:
 
         # Handle delivery of packet to all non-sender nodes
         for node in self.nodes:
-            if node != source:
-                node.recv(p)
+            if node is not source:
+                node.recv(p, self)
