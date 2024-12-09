@@ -48,7 +48,7 @@ RouteGenerator.update_routes(nets)
 # Start Processes
 # N1.start_process((EthernetAddr("11:33:33:33:33:33"), IPAddr("192.168.1.3")))
 # N2.start_process((EthernetAddr("FF:FF:FF:FF:FF:FF"), IPAddr("192.168.0.3")))
-N3.start_process((EthernetAddr("11:22:22:22:22:22"), IPAddr("192.168.0.2")))
+N3.start_process((EthernetAddr("11:22:22:22:22:22"), IPAddr("192.168.0.1")))
 
 # Leave gap in the log
 Logger.instance.log(Level.INFO, f"")

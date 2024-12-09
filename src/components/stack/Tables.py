@@ -18,6 +18,7 @@ class RouteEntry:
         self.network: IPAddr = network
         self.next_hop: IPAddr = next
         self.iface: EthernetLayer = iface
+        self.direct = False
 
     def __str__(self):
         return f"[{self.network}: {self.next_hop}, {self.iface.addr}]"

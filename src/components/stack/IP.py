@@ -43,10 +43,14 @@ class IPLayer:
                     if route is None:
                         Logger.instance.log(Level.DEBUG,f"IP Layer {self.addr} failed to route packet for {next.ip}.")
 
+                    # Figure out a target IP based on whether or not the entry is direct
+                    target = next.ip if route.direct else route.next_hop
+
                     # Check ARP table
-                    arp_entry = self.stack.arp_table.search(route.next_hop)
+                    arp_entry = self.stack.arp_table.search(target)
                     if arp_entry is None:
                         Logger.instance.log(Level.DEBUG, f"IP Layer {self.addr} failed to ARP lookup address {route.next_hop}")
 
                     # Transmit the packet
                     next.ether = arp_entry.ether
+                    self.stack.pass_down_to_ether(next, route.iface)

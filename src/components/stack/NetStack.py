@@ -91,11 +91,16 @@ class NetStack:
         :param packet:
         :return:
         """
+        Logger.instance.log(Level.TRACE, f"{source.addr} passing packet to {self.ips[source].addr}")
         self.ips[source].enqueue(packet)
 
-    def pass_down_to_ether(self, paket: Packet):
+    def pass_down_to_ether(self, packet: Packet, iface: EthernetLayer):
         """
         Pass this packet down to the Ethernet layer to be transmitted.
-        :param paket:
+        :param iface:
+        :param packet:
         :return:
         """
+        # Find the right interface
+        Logger.instance.log(Level.TRACE, f"{packet} sent to {iface.addr} for transmission")
+        iface.stack_in_queue.put(packet)

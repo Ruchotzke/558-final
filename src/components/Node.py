@@ -59,6 +59,7 @@ class Node:
 
         # Update the route table to reflect new direct entries
         entry = RouteEntry(net_addr, ip, hw_layer)
+        entry.direct = True
         self.stack.route_table.insert_entry(entry)
         Logger.instance.log(Level.TRACE, f"Generated new route entry: {entry} to {self.name}")
 
