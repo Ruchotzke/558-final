@@ -14,25 +14,44 @@ class EthernetLayer:
         self.env = env              # Simpy environment
         self.addr = addr            # Associated Ethernet layer addr
         self.promiscuous = False    # Promiscuous mode (sniffing)
-        self.queue = simpy.Store(env)   # The input queue
+        self.net_in_queue = simpy.Store(env)    # The input queue from the network
+        self.stack_in_queue = simpy.Store(env)  # The input queue from the upper part of the stack
         self.stack = stack          # Network stack
-        env.process(self.process())
+        env.process(self.recv_process())    # Network Receiver
+        env.process(self.send_process())    # Stack Receiver
 
     def enqueue(self, p: Packet):
-        self.queue.put(p)
+        Logger.instance.log(Level.INFO, f"Interface {self.addr} recieved packet from network.")
+        self.net_in_queue.put(p)
 
-    def process(self):
+    def recv_process(self):
         while True:
             # Await the next packet
-            next: Packet = yield self.queue.get()
+            next: Packet = yield self.net_in_queue.get()
 
             # Check if the address matches
             if self.promiscuous or self.addr.filter(next.ether):
                 # Packet can be processed.
-                Logger.instance.log(Level.TRACE, f'{self.addr} received packet.')
+                Logger.instance.log(Level.INFO, f'{self.addr} accepted packet.')
 
                 # Push up to IP
                 self.stack.pass_up_to_ip(next, self)
             else:
                 # packet is deleted
                 Logger.instance.log(Level.DEBUG, f'Ethernet layer {self.addr} ignoring packet with addr {next.ether}')
+
+    def send_process(self):
+        while True:
+            # Await the next packet
+            next: Packet = yield self.stack_in_queue.get()
+
+            # Get a reference to the connected network
+            net = self.stack.get_network(self)
+
+            # Await the shared resource
+            with net.active.request() as req:
+                yield req
+
+                # Push the packet out
+                Logger.instance.log(Level.DEBUG, f'Interface {self.addr} pushed out a packet')
+                yield self.env.process(net.proc_send_packet(self, next))

@@ -7,7 +7,9 @@ from src.components.Packet import Packet
 from src.components.addressing.EthernetAddr import EthernetAddr
 from src.components.addressing.IPAddr import IPAddr
 from src.components.stack.Ethernet import EthernetLayer
-from src.components.stack.IP import IPLayerStandard
+from src.components.stack.IP import IPLayer
+from src.components.stack.Tables import RouteTable, ArpTable
+from src.utilities.Logger import Logger, Level
 
 
 class NetStack:
@@ -20,6 +22,8 @@ class NetStack:
         self.ethers = {}    # Map of networks to ethernet layers
         self.ips = {}       # Map of ethernet layers to IP layers
         self.apps = []
+        self.route_table = RouteTable() # Route Table
+        self.arp_table = ArpTable()     # ARP Cache
 
     def add_ethernet(self, ether: EthernetAddr, net):
         """
@@ -41,9 +45,28 @@ class NetStack:
         :return:
         """
         # Generate a new layer
-        layer = IPLayerStandard(self.env, ip, self)
+        layer = IPLayer(self.env, ip, self)
         self.ips[ether_layer] = layer
         return layer
+
+    def get_ip_for_ether(self, ether: EthernetAddr):
+        """
+        Find the corresponding IP address for an Ethernet address
+        :param ether:
+        :return:
+        """
+        for layer in self.ips.keys():
+            if layer.addr == ether:
+                return self.ips[layer]
+        Logger.instance.log(Level.ERROR, f"Unable to map {ether} to an IP address within stack.")
+        return None
+
+    def get_network(self, layer: EthernetLayer):
+        for net in self.ethers.keys():
+            if self.ethers[net] == layer:
+                return net
+        Logger.instance.log(Level.ERROR, f"Unable to find network for physical addr {layer.addr}")
+        return None
 
     def pass_up_to_ip(self, packet: Packet, source: EthernetLayer):
         """
@@ -53,3 +76,10 @@ class NetStack:
         :return:
         """
         self.ips[source].enqueue(packet)
+
+    def pass_down_to_ether(self, paket: Packet):
+        """
+        Pass this packet down to the Ethernet layer to be transmitted.
+        :param paket:
+        :return:
+        """
