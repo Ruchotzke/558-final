@@ -30,7 +30,7 @@ class EthernetLayer:
             next: Packet = yield self.net_in_queue.get()
 
             # Check if the address matches
-            if self.promiscuous or self.addr.filter(next.ether):
+            if self.promiscuous or self.addr.filter(next.dst_ether):
                 # Packet can be processed.
                 Logger.instance.log(Level.INFO, f'{self.addr} accepted packet.')
 
@@ -38,7 +38,7 @@ class EthernetLayer:
                 self.stack.pass_up_to_ip(next, self)
             else:
                 # packet is deleted
-                Logger.instance.log(Level.DEBUG, f'Ethernet layer {self.addr} ignoring packet with addr {next.ether}')
+                Logger.instance.log(Level.DEBUG, f'Ethernet layer {self.addr} ignoring packet with addr {next.dst_ether}')
 
     def send_process(self):
         while True:

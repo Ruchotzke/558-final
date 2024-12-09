@@ -27,24 +27,24 @@ class IPLayer:
             next: Packet = yield self.queue.get()
 
             # Check/filter the IP address
-            if next.ip == self.addr:
+            if next.dst_ip == self.addr:
                 # Forward the packet to the applications
                 Logger.instance.log(Level.TRACE, f"IP Layer {self.addr} processing packet.")
             else:
                 if not self.router:
                     # Throw away the packet
-                    Logger.instance.log(Level.DEBUG, f"IP Layer {self.addr} ignoring packet for {next.ip}.")
+                    Logger.instance.log(Level.DEBUG, f"IP Layer {self.addr} ignoring packet for {next.dst_ip}.")
                 else:
                     # Attempt to route the packet
-                    Logger.instance.log(Level.DEBUG, f"IP Layer {self.addr} attempting to route packet for {next.ip}.")
+                    Logger.instance.log(Level.DEBUG, f"IP Layer {self.addr} attempting to route packet for {next.dst_ip}.")
 
                     # Check route table
-                    route = self.stack.route_table.search(next.ip.apply_netmask(IPAddr("255.255.255.0")))
+                    route = self.stack.route_table.search(next.dst_ip.apply_netmask(IPAddr("255.255.255.0")))
                     if route is None:
-                        Logger.instance.log(Level.DEBUG,f"IP Layer {self.addr} failed to route packet for {next.ip}.")
+                        Logger.instance.log(Level.DEBUG,f"IP Layer {self.addr} failed to route packet for {next.dst_ip}.")
 
                     # Figure out a target IP based on whether or not the entry is direct
-                    target = next.ip if route.direct else route.next_hop
+                    target = next.dst_ip if route.direct else route.next_hop
 
                     # Check ARP table
                     arp_entry = self.stack.arp_table.search(target)
@@ -52,5 +52,5 @@ class IPLayer:
                         Logger.instance.log(Level.DEBUG, f"IP Layer {self.addr} failed to ARP lookup address {route.next_hop}")
 
                     # Transmit the packet
-                    next.ether = arp_entry.ether
+                    next.dst_ether = arp_entry.ether
                     self.stack.pass_down_to_ether(next, route.iface)

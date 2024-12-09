@@ -80,7 +80,9 @@ class Node:
         while True:
             # Figure out a network and address
             net = list(self.stack.ethers.keys())[0]
-            packet = Packet(100, "hello", target_addrs[0], target_addrs[1])
+            src_ip = list(self.stack.ips.values())[0].addr
+            src_hw = list(self.stack.ethers.values())[0].addr
+            packet = Packet(100, "hello", src_hw, target_addrs[0], src_ip, target_addrs[1])
 
             # Send the packet
             self.env.process(self.push_packet(net, packet))

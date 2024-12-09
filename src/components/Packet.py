@@ -6,12 +6,18 @@ from src.components.addressing.IPAddr import IPAddr
 
 
 class Packet:
-    def __init__(self, length: float, msg, ether: EthernetAddr, ip = IPAddr):
+    def __init__(self, length: float, msg: str, src_ether: EthernetAddr, dst_ether: EthernetAddr, src_ip: IPAddr, dst_ip: IPAddr):
         """
         Initialize a new packet.
         :param msg: The contained message.
         """
         self.length = length
+        self.src_ether = src_ether
+        self.dst_ether = dst_ether
+        self.src_ip = src_ip
+        self.dst_ip = dst_ip
+
         self.msg = msg
-        self.ether = ether
-        self.ip = ip
+
+    def __str__(self):
+        return f"[pkt: {self.msg}: src ->[{self.src_ether},{self.src_ip}], dst->[{self.dst_ether},{self.dst_ip}]]"
