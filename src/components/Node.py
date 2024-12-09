@@ -9,17 +9,32 @@ from src.components.addressing.IPAddr import IPAddr
 from src.components.stack.NetStack import NetStack
 from src.components.stack.Tables import RouteEntry
 from src.utilities.Logger import Logger, Level
+from typing import List
+
+# Define some types
+NODE_SET = List["Node"]
 
 
 class Node:
     """
     A node in a network.
     """
+
+    nodes: NODE_SET = []
+    """
+    A set of all nodes in the simulation.
+    """
+
+
     def __init__(self, env: simpy.Environment, name):
         self.env = env
         self.name = name
         self.stack = NetStack(env)
+        Node.nodes.append(self)
         Logger.instance.log(Level.TRACE, f'Node {self.name} initialized.')
+
+    def __del__(self):
+        Node.nodes.remove(self)
 
     def start_process(self, target: (EthernetAddr, IPAddr)):
         self.env.process(self.produce(target))

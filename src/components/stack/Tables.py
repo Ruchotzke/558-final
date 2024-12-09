@@ -8,6 +8,7 @@ from typing import List
 ArpTableContents = list["ArpEntry"]
 RouteTableContents = list["RouteEntry"]
 
+
 class RouteEntry:
     """
     Entry in the route table
@@ -26,6 +27,7 @@ class ArpEntry:
     """
     Entry in the ARP table
     """
+
     def __init__(self, ip: IPAddr, hw: EthernetAddr):
         self.ip = ip
         self.ether = hw
@@ -33,19 +35,21 @@ class ArpEntry:
     def __str__(self):
         return f"[{self.ip} -> {self.ether}]"
 
+
 class RouteTable:
+    """
+    A simple route table implementation
+    """
+
     tables = []
     """
     A set of all tables in the simulation.
     """
 
-    """
-    A simple route table implementation
-    """
-
     def __init__(self):
         self.table: RouteTableContents = []
         RouteTable.tables.append(self)
+        self.default: RouteEntry = None
 
     def __del__(self):
         RouteTable.tables.remove(self)
@@ -56,14 +60,15 @@ class RouteTable:
     def search(self, network: IPAddr):
         entries = [a for a in self.table if a.network == network]
         if len(entries) == 0:
-            Logger.instance.log(Level.DEBUG, f"Cannot find route entry for network {network}")
-            return None
+            if self.default is None:
+                Logger.instance.log(Level.DEBUG, f"Cannot find route entry for network {network}, missing default")
+                return None
+            else:
+                Logger.instance.log(Level.TRACE, f"Default route returned for {network} query")
+                return self.default
         if len(entries) > 1:
             Logger.instance.log(Level.DEBUG, f"Found multiple route entries for network {network}")
         return entries[0]
-
-
-
 
 
 class ArpTable:

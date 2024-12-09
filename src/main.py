@@ -5,7 +5,7 @@ from src.components.Network import Network
 from src.components.addressing.EthernetAddr import EthernetAddr
 from src.components.addressing.IPAddr import IPAddr
 from src.utilities import RouteGenerator
-from src.utilities.Logger import Logger
+from src.utilities.Logger import Logger, Level
 
 env = simpy.Environment()
 
@@ -38,6 +38,9 @@ right_net = Network(env, IPAddr("192.168.1.0"))
 N2.add_interface(right_net, EthernetAddr("11:22:22:22:22:22"), IPAddr("192.168.1.2"))
 N3.add_interface(right_net, EthernetAddr("11:33:33:33:33:33"), IPAddr("192.168.1.3"))
 
+# Mark N2 as a router
+N2.stack.set_router(True)
+
 # Network setup
 nets = [left_net, right_net]
 RouteGenerator.update_routes(nets)
@@ -46,5 +49,10 @@ RouteGenerator.update_routes(nets)
 # N1.start_process((EthernetAddr("11:33:33:33:33:33"), IPAddr("192.168.1.3")))
 # N2.start_process((EthernetAddr("FF:FF:FF:FF:FF:FF"), IPAddr("192.168.0.3")))
 N3.start_process((EthernetAddr("11:22:22:22:22:22"), IPAddr("192.168.0.2")))
+
+# Leave gap in the log
+Logger.instance.log(Level.INFO, f"")
+Logger.instance.log(Level.INFO, f"===STARTING SIMULATION===")
+Logger.instance.log(Level.INFO, f"")
 
 env.run(until=8)

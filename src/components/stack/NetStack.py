@@ -3,6 +3,7 @@ A simple implementation of a network stack.
 """
 import simpy
 
+from src.components.Network import Network
 from src.components.Packet import Packet
 from src.components.addressing.EthernetAddr import EthernetAddr
 from src.components.addressing.IPAddr import IPAddr
@@ -10,7 +11,11 @@ from src.components.stack.Ethernet import EthernetLayer
 from src.components.stack.IP import IPLayer
 from src.components.stack.Tables import RouteTable, ArpTable
 from src.utilities.Logger import Logger, Level
+from typing import Dict
 
+# Some types
+ETHER_LAYERS = Dict[Network, EthernetLayer]
+IP_LAYERS = Dict[EthernetLayer, IPLayer]
 
 class NetStack:
     """
@@ -19,8 +24,8 @@ class NetStack:
 
     def __init__(self, env: simpy.Environment):
         self.env = env
-        self.ethers = {}    # Map of networks to ethernet layers
-        self.ips = {}       # Map of ethernet layers to IP layers
+        self.ethers: ETHER_LAYERS = {}    # Map of networks to ethernet layers
+        self.ips: IP_LAYERS = {}       # Map of ethernet layers to IP layers
         self.apps = []
         self.route_table = RouteTable() # Route Table
         self.arp_table = ArpTable()     # ARP Cache
@@ -48,6 +53,17 @@ class NetStack:
         layer = IPLayer(self.env, ip, self)
         self.ips[ether_layer] = layer
         return layer
+
+    def set_router(self, should_route: bool):
+        """
+        Configure this device as a router or not
+        :param should_route:
+        :return:
+        """
+        for ip in self.ips.values():
+            Logger.instance.log(Level.TRACE, f"Reconfiguring {ip.addr} as router.")
+            ip.router = should_route
+
 
     def get_ip_for_ether(self, ether: EthernetAddr):
         """
