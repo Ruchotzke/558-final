@@ -30,8 +30,3 @@ class IPLayerStandard:
                 Logger.instance.log(Level.TRACE, f"IP Layer {self.addr} processing packet.")
             else:
                 Logger.instance.log(Level.DEBUG, f"IP Layer {self.addr} ignoring packet for {next.ip}.")
-
-class IPLayerRouter:
-    """
-    An IP layer which forwards, rather than discards, non-matching packets.
-    """
