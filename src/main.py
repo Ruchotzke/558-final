@@ -55,4 +55,4 @@ Logger.instance.log(Level.INFO, f"")
 Logger.instance.log(Level.INFO, f"===STARTING SIMULATION===")
 Logger.instance.log(Level.INFO, f"")
 
-env.run(until=8)
+env.run(until=12)
