@@ -5,6 +5,7 @@ import simpy
 
 from src.components.Packet import Packet
 from src.components.addressing.EthernetAddr import EthernetAddr
+from src.components.addressing.IPAddr import IPAddr
 from src.components.stack.NetStack import NetStack
 from src.utilities.Logger import Logger, Level
 
@@ -19,17 +20,20 @@ class Node:
         self.stack = NetStack(env)
         Logger.instance.log(Level.TRACE, f'Node {self.name} initialized.')
 
-    def start_process(self, target: EthernetAddr):
+    def start_process(self, target: (EthernetAddr, IPAddr)):
         self.env.process(self.produce(target))
 
-    def add_interface(self, network, ether: EthernetAddr):
+    def add_interface(self, network, ether: EthernetAddr, ip: IPAddr):
         """
         Add an interface to this node.
+        :param ether:
+        :param ip:
         :param network:
         :return:
         """
-        self.stack.add_ethernet(ether, network)
+        hw_layer = self.stack.add_ethernet(ether, network)
         network.register(self)
+        self.stack.add_ip(ip, hw_layer)
 
     def recv(self, p: Packet, source_net):
         """
@@ -43,11 +47,11 @@ class Node:
         # Sort and send to proper interface
         self.stack.ethers[source_net].queue.put(p)
 
-    def produce(self, target_addr: EthernetAddr):
+    def produce(self, target_addrs: (EthernetAddr, IPAddr)):
         while True:
             # Figure out a network and address
             net = list(self.stack.ethers.keys())[0]
-            packet = Packet(100, "hello", target_addr)
+            packet = Packet(100, "hello", target_addrs[0], target_addrs[1])
 
             # Send the packet
             self.env.process(self.push_packet(net, packet))
