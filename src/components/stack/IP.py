@@ -3,6 +3,7 @@ import simpy
 from src.components.Packet import Packet
 from src.components.addressing.IPAddr import IPAddr
 from src.components.disciplines.RoundRobin import RoundRobinDiscipline
+from src.components.stack.Discipline import PacketDiscipline
 from src.components.stack.Tables import RouteTable, ArpTable
 from src.utilities import Delays
 from src.utilities.Logger import Logger, Level
@@ -12,7 +13,7 @@ class IPLayer:
     """
     A standard IP layer. Non-matching packets are routed if configured to do so.
     """
-    def __init__(self, env: simpy.Environment, addr: IPAddr, stack):
+    def __init__(self, env: simpy.Environment, addr: IPAddr, stack, disc: PacketDiscipline = None):
         self.env = env              # Simpy environment
         self.addr = addr            # Associated IP layer addr
         self.to_process_queue = simpy.Store(env)   # The input queue
@@ -20,8 +21,11 @@ class IPLayer:
         self.stack = stack              # Network stack
         self.router = False             # Should this layer route packets
 
-        self.discipline = RoundRobinDiscipline()    # The routing discipline
-        self.discipline.init_flows([], True)
+        if disc is None:
+            self.discipline = RoundRobinDiscipline()    # The routing discipline
+            self.discipline.init_flows([], True)
+        else:
+            self.discipline = disc
 
         self.discipline.init_proc(env, self.to_send_queue)
         env.process(self.proc_handle_inputs())

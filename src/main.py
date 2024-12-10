@@ -9,6 +9,8 @@ from src.components.addressing.IPAddr import IPAddr
 from src.components.apps.Generator import GeneratorApp
 from src.components.apps.Listener import ListenerApp
 from src.components.apps.LogServer import LogServerApp
+from src.components.disciplines.FQ import FQDiscipline
+from src.components.disciplines.RoundRobin import RoundRobinDiscipline
 from src.utilities import RouteGenerator
 from src.utilities.Logger import Logger, Level
 
@@ -46,7 +48,8 @@ N1 = Node(env, "N1")
 N2 = Node(env, "N2")
 N3 = Node(env, "N3")
 left_net = Network(env, IPAddr("192.168.0.0"))
-left_net.bandwidth = 250
+left_net.bandwidth = 5000
+env.process(left_net.proc_sample_utilization(os.path.join(base_folder, "left_net")))
 
 N1.add_interface(left_net, EthernetAddr("00:11:11:11:11:11"), IPAddr("192.168.0.1"))
 N2.add_interface(left_net, EthernetAddr("00:22:22:22:22:22"), IPAddr("192.168.0.2"))
@@ -56,14 +59,20 @@ N3.add_interface(left_net, EthernetAddr("00:33:33:33:33:33"), IPAddr("192.168.0.
 S1 = Node(env, "S1")
 S2 = Node(env, "S2")
 right_net = Network(env, IPAddr("192.168.1.0"))
-right_net.bandwidth = 250
+right_net.bandwidth = 20
+env.process(right_net.proc_sample_utilization(os.path.join(base_folder, "right_net")))
+
 
 S1.add_interface(right_net, EthernetAddr("11:EE:EE:EE:EE:EE"), IPAddr("192.168.1.1"))
 S2.add_interface(right_net, EthernetAddr("11:FF:FF:FF:FF:FF"), IPAddr("192.168.1.2"))
 
+# Generate router discipline
+rr = FQDiscipline()
+rr.init_flows([IPAddr("192.168.0.1"), IPAddr("192.168.0.2"), IPAddr("192.168.0.3")], False)
+
 # Generate router
 R1 = Node(env, "R1")
-R1.add_interface(left_net, EthernetAddr("00:44:44:44:44:44"), IPAddr("192.168.0.254"))
+R1.add_interface(left_net, EthernetAddr("00:44:44:44:44:44"), IPAddr("192.168.0.254"), disc=rr)
 R1.add_interface(right_net, EthernetAddr("11:44:44:44:44:44"), IPAddr("192.168.1.254"))
 R1.stack.set_router(True)
 

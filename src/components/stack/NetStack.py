@@ -8,6 +8,7 @@ from src.components.Packet import Packet
 from src.components.addressing.EthernetAddr import EthernetAddr
 from src.components.addressing.IPAddr import IPAddr
 from src.components.stack.Application import Application
+from src.components.stack.Discipline import PacketDiscipline
 from src.components.stack.Ethernet import EthernetLayer
 from src.components.stack.IP import IPLayer
 from src.components.stack.Tables import RouteTable, ArpTable
@@ -45,15 +46,16 @@ class NetStack:
         self.ethers[net] = layer
         return layer
 
-    def add_ip(self, ip: IPAddr, ether_layer: EthernetLayer):
+    def add_ip(self, ip: IPAddr, ether_layer: EthernetLayer, disc: PacketDiscipline = None):
         """
         Add a new IP layer to this stack.
+        :param disc:
         :param ip:
         :param ether_layer:
         :return:
         """
         # Generate a new layer
-        layer = IPLayer(self.env, ip, self)
+        layer = IPLayer(self.env, ip, self, disc)
         self.ips[ether_layer] = layer
         return layer
 

@@ -7,6 +7,7 @@ from src.components.Packet import Packet
 from src.components.addressing.EthernetAddr import EthernetAddr
 from src.components.addressing.IPAddr import IPAddr
 from src.components.stack.Application import Application
+from src.components.stack.Discipline import PacketDiscipline
 from src.components.stack.NetStack import NetStack
 from src.components.stack.Tables import RouteEntry
 from src.utilities.Logger import Logger, Level
@@ -37,9 +38,10 @@ class Node:
     def __del__(self):
         Node.nodes.remove(self)
 
-    def add_interface(self, network, ether: EthernetAddr, ip: IPAddr, netm: IPAddr = IPAddr("255.255.255.0")):
+    def add_interface(self, network, ether: EthernetAddr, ip: IPAddr, netm: IPAddr = IPAddr("255.255.255.0"), disc: PacketDiscipline = None):
         """
         Add an interface to this node.
+        :param disc:
         :param netm:
         :param ether:
         :param ip:
@@ -49,7 +51,7 @@ class Node:
         # Add the layers
         hw_layer = self.stack.add_ethernet(ether, network)
         network.register(hw_layer)
-        self.stack.add_ip(ip, hw_layer)
+        self.stack.add_ip(ip, hw_layer, disc)
 
         # Apply the netmask
         net_addr = ip.apply_netmask(netm)

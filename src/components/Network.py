@@ -44,3 +44,25 @@ class Network:
         for node in self.nodes:
             if node is not source:
                 node.enqueue(p)
+    def proc_sample_utilization(self, file):
+        with open(file, "a") as fd:
+            fd.write(f"{self.net_addr} utilization summary \n")
+
+        while True:
+
+            curr = 0
+
+            for i in range(0, 1000):
+                # Sample the network
+                in_use = len(self.active.users) > 0
+
+                # Store
+                if in_use:
+                    curr += 1
+
+                # Wait
+                yield self.env.timeout(0.001)
+
+            # Save statistic
+            with open(file, "a") as fd:
+                fd.write(f"{curr / 1000.0} \n")

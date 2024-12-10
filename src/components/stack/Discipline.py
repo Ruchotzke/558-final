@@ -1,4 +1,4 @@
-from typing import List, Tuple
+from typing import List, Tuple, Dict
 
 import simpy
 
@@ -15,6 +15,7 @@ class Flow:
     def __init__(self, match: IPAddr):
         self.match = match
         self.queue: List[Packet] = []
+        self.properties: Dict[str, float] = {}
 
 
 class PacketDiscipline:

@@ -24,30 +24,32 @@ class RoundRobinDiscipline(PacketDiscipline):
 
     def proc_handle_disc(self):
         while True:
-            # delay until next check
+            # delay until the output queue is empty (on-demand)
+            if len(self.output_queue.items) == 0:
+                # Perform basic RR on all queues until we get an item
+                for i in range(0, len(self.flows) + 1):
+                    # Get the queue index
+                    idx = (i + self.left_off + 1) % (len(self.flows) + 1)
+
+                    # Handle this queue
+                    if idx == len(self.flows):
+                        if self.use_default:
+                            # Default queue
+                            if len(self.default.queue) > 0:
+                                next = self.default.queue[0]
+                                self.default.queue.pop(0)
+                                self.output_queue.put(next)
+                                self.left_off = idx
+                                break
+                    else:
+                        # Normal queue
+                        if len(self.flows[idx].queue) > 0:
+                            next = self.flows[idx].queue[0]
+                            self.flows[idx].queue.pop(0)
+                            self.output_queue.put(next)
+                            self.left_off = idx
+                            break
             yield self.env.timeout(Delays.ROUND_ROBIN_DELAY())
 
-            # Perform basic RR on all queues until we get an item
-            for i in range(0, len(self.flows) + 1):
-                # Get the queue index
-                idx = (i + self.left_off+1) % (len(self.flows) + 1)
-                Logger.instance.log(Level.TRACE, f"ROUND ROBIN TICK {idx}")
 
-                # Handle this queue
-                if idx == len(self.flows) and self.use_default:
-                    # Default queue
-                    if len(self.default.queue) > 0:
-                        next = self.default.queue[0]
-                        self.default.queue.pop(0)
-                        self.output_queue.put(next)
-                        self.left_off = idx
-                        break
-                else:
-                    # Normal queue
-                    if len(self.flows[idx].queue) > 0:
-                        next = self.flows[idx].queue[0]
-                        self.flows[idx].queue.pop(0)
-                        self.output_queue.put(next)
-                        self.left_off = idx
-                        break
 
