@@ -12,8 +12,8 @@ class RoundRobinDiscipline(PacketDiscipline):
     A basic round-robin scheduler
     """
 
-    def __init__(self):
-        super().__init__()
+    def __init__(self, file):
+        super().__init__(file)
         self.left_off = 0
 
     def init_flows(self, flows: List[IPAddr], use_default: bool):
@@ -26,6 +26,7 @@ class RoundRobinDiscipline(PacketDiscipline):
         while True:
             # delay until the output queue is empty (on-demand)
             if len(self.output_queue.items) == 0:
+                yield self.env.timeout(1)
                 # Perform basic RR on all queues until we get an item
                 for i in range(0, len(self.flows) + 1):
                     # Get the queue index
@@ -40,6 +41,9 @@ class RoundRobinDiscipline(PacketDiscipline):
                                 self.default.queue.pop(0)
                                 self.output_queue.put(next)
                                 self.left_off = idx
+                                if self.file is not None:
+                                    with open(self.file, "a") as fd:
+                                        fd.write(f"{self.env.now}, DEQUEUE {self.default.match}, {next.length}\n")
                                 break
                     else:
                         # Normal queue
@@ -48,7 +52,17 @@ class RoundRobinDiscipline(PacketDiscipline):
                             self.flows[idx].queue.pop(0)
                             self.output_queue.put(next)
                             self.left_off = idx
+                            if self.file is not None:
+                                with open(self.file, "a") as fd:
+                                    fd.write(f"{self.env.now}, DEQUEUE {self.flows[idx].match}, {next.length}\n")
                             break
+            else:
+                print("_-------------------------------------------")
+                print(len(self.output_queue.items))
+                print(len(self.flows))
+                for f in self.flows:
+                    print(f"---{len(f.queue)}")
+                exit(1)
             yield self.env.timeout(Delays.ROUND_ROBIN_DELAY())
 
 

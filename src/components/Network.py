@@ -52,7 +52,7 @@ class Network:
 
             curr = 0
 
-            for i in range(0, 1000):
+            for i in range(0, 100):
                 # Sample the network
                 in_use = len(self.active.users) > 0
 
@@ -65,4 +65,4 @@ class Network:
 
             # Save statistic
             with open(file, "a") as fd:
-                fd.write(f"{curr / 1000.0} \n")
+                fd.write(f"{curr / 100.0} \n")

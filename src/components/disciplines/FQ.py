@@ -13,8 +13,8 @@ class FQDiscipline(PacketDiscipline):
     A basic fair-queue (FQ) scheduler
     """
 
-    def __init__(self):
-        super().__init__()
+    def __init__(self, file):
+        super().__init__(file)
         self.left_off = 0
         self.virt_finishes: Dict[Packet, float] = {}
 
@@ -36,6 +36,9 @@ class FQDiscipline(PacketDiscipline):
             if flow.match == p.src_ip:
                 # Use this flow
                 flow.queue.append(p)
+                if self.file is not None:
+                    with open(self.file, "a") as fd:
+                        fd.write(f"{self.env.now}, ENQUEUE {flow.match}, {p.length}\n")
 
                 # Handle finish times
                 vir_start = max(self.env.now, flow.properties["vir_fin"])
@@ -68,5 +71,8 @@ class FQDiscipline(PacketDiscipline):
                     pkt = self.flows[idx].queue[0]
                     self.flows[idx].queue.pop()
                     self.output_queue.put(pkt)
+                    if self.file is not None:
+                        with open(self.file, "a") as fd:
+                            fd.write(f"{self.env.now}, DEQUEUE {self.flows[idx].match}, {pkt.length}\n")
             yield self.env.timeout(Delays.ROUND_ROBIN_DELAY())
 

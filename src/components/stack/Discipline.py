@@ -24,12 +24,13 @@ class PacketDiscipline:
     Consists of at least one flow, a processor, and an output.
     """
 
-    def __init__(self):
+    def __init__(self, file):
         self.default = Flow(IPAddr("0.0.0.0"))
         self.use_default = True
         self.env: simpy.Environment = None
         self.output_queue: simpy.Store = None
         self.flows: List[Flow] = []
+        self.file = file
 
     def init_flows_weighted(self, flows: List[Tuple[IPAddr, float]], default_weight: float):
         """
@@ -60,6 +61,9 @@ class PacketDiscipline:
             if flow.match == p.src_ip:
                 # Use this flow
                 flow.queue.append(p)
+                if self.file is not None:
+                    with open(self.file, "a") as fd:
+                        fd.write(f"{self.env.now}, ENQUEUE {flow.match}, {p.length}\n")
                 return
 
         # If we didn't find a queue, try default

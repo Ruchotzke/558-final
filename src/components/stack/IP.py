@@ -21,15 +21,17 @@ class IPLayer:
         self.stack = stack              # Network stack
         self.router = False             # Should this layer route packets
 
-        if disc is None:
-            self.discipline = RoundRobinDiscipline()    # The routing discipline
-            self.discipline.init_flows([], True)
-        else:
+        if disc is not None:
             self.discipline = disc
+            self.discipline.init_proc(env, self.to_send_queue)
+            self.ignore_disc = False
+        else:
+            self.ignore_disc = True
 
-        self.discipline.init_proc(env, self.to_send_queue)
         env.process(self.proc_handle_inputs())
         env.process(self.proc_handle_outputs())
+
+        Logger.instance.log(Level.DEBUG, f"{addr} is{' ' if not self.ignore_disc else 'not '}using a discipline")
 
     def enqueue(self, p: Packet):
         self.to_process_queue.put(p)
@@ -58,7 +60,10 @@ class IPLayer:
                 else:
                     # The packet needs to be routed: put it into output queue
                     Logger.instance.log(Level.DEBUG, f"IP Layer {self.addr} moving packet for {next.dst_ip} to output queue.")
-                    self.discipline.enqueue_packet(next)
+                    if self.ignore_disc:
+                        self.to_send_queue.put(next)
+                    else:
+                        self.discipline.enqueue_packet(next)
 
 
     def proc_handle_outputs(self):
