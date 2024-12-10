@@ -107,6 +107,17 @@ class NetStack:
         Logger.instance.log(Level.TRACE, f"{source.addr} passing packet to {self.ips[source].addr}")
         self.ips[source].enqueue(packet)
 
+    def pass_up_to_app(self, packet: Packet):
+        """
+        Pass this packet up to an application.
+        :param packet:
+        :return:
+        """
+        if packet.dst_port not in self.apps:
+            Logger.instance.log(Level.WARNING, f"Unable to match app for port {packet.dst_port}. Discarding.")
+            return
+        self.apps[packet.dst_port].input.put(packet)
+
     def pass_down_to_ether(self, packet: Packet, iface: EthernetLayer):
         """
         Pass this packet down to the Ethernet layer to be transmitted.

@@ -30,6 +30,7 @@ class IPLayer:
             if next.dst_ip == self.addr:
                 # Forward the packet to the applications
                 Logger.instance.log(Level.TRACE, f"IP Layer {self.addr} processing packet.")
+                self.stack.pass_up_to_app(next)
             else:
                 if not self.router:
                     # Throw away the packet
