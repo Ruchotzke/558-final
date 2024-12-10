@@ -1,0 +1,89 @@
+%\documentclass[12pt]{article}
+\documentclass{elsarticle} %A different option for format styling...
+
+\textwidth 6.5in
+\oddsidemargin 0.0in %this is a 1-inch margin
+\evensidemargin 1.0in %matching 1-inch margin
+
+% \usepackage{wasysym}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{alltt}
+\usepackage{multicol}
+\usepackage{hyperref}
+\usepackage{mathrsfs} %for \mathscr{}
+\usepackage{amsthm}
+\usepackage{listings}
+\usepackage{gensymb} %for \degree
+\usepackage{longtable} %for longtabu
+\usepackage{tabu} %for longtabu
+\usepackage{hhline} %for double \hline in longtabu
+\usepackage{multirow}
+\usepackage[dvipsnames]{xcolor}
+
+\newtheorem{defin}{Definition}
+\newtheorem{intuit}{Intuition}
+
+%Here are the commands included in elsarticle style:
+\newtheorem{thm}{Theorem}
+\newtheorem{lem}[thm]{Lemma}
+\newdefinition{rmk}{Remark}
+\newproof{pf}{Proof}
+\newproof{pot}{}
+
+\interfootnotelinepenalty=10000
+
+\renewcommand{\phi}{\varphi}
+\newcommand{\always}{\Box}
+\newcommand{\eventually}{\Diamond}
+\newcommand{\calL}{{\cal L}}
+
+\newcommand*\makeAlph[1]{\symbol{\numexpr64+#1}}
+
+\newcommand{\pspic}[2]{\scalebox{#1}{\includegraphics{#2}}}
+
+%Number the Exercises with one counter through multiple sections
+\newcounter{ExerciseCounter}
+\counterwithin{ExerciseCounter}{section}
+
+% Hyperlink styling
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,
+    urlcolor=cyan,
+}
+
+
+\begin{document}
+
+\title{Real Time Systems, CprE 558\\ Homework 4}
+
+\author{Ethan Ruchotzke}
+
+\date{\today}
+
+\maketitle
+
+{\bf Due date: 12/07/24}
+
+\begin{table}[htbp]
+    \centering
+    \begin{tabular}{|c|c|c|}
+        \hline
+        Connection & BW & Accepted? \\
+        \hline
+        C1 & 3 & T \\
+        C2 & 4.75 & T \\
+        C3 & 2 & T \\
+        C4 & 1.5 & T \\
+        C5 & 0.39 & T \\
+        C6 & 2.9 & dsfsdfsdfsdfT \\
+        C7 & 1.25 & F \\
+        C8 & 0.9 & F \\
+        C9 & 0.5 & FFFFF \\
+        \hline
+    \end{tabular}
+\end{table}
+
+\end{document}
