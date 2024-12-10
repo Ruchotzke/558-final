@@ -2,6 +2,7 @@ import simpy
 
 from src.components.Packet import Packet
 from src.components.addressing.EthernetAddr import EthernetAddr
+from src.utilities import Delays
 from src.utilities.Logger import Logger, Level
 
 
@@ -29,6 +30,9 @@ class EthernetLayer:
             # Await the next packet
             next: Packet = yield self.net_in_queue.get()
 
+            # Queue delay
+            yield self.env.timeout(Delays.HW_QUEUE_DELAY())
+
             # Check if the address matches
             if self.promiscuous or self.addr.filter(next.dst_ether):
                 # Packet can be processed.
@@ -44,6 +48,9 @@ class EthernetLayer:
         while True:
             # Await the next packet
             next: Packet = yield self.stack_in_queue.get()
+
+            # Queue delay
+            yield self.env.timeout(Delays.HW_QUEUE_DELAY())
 
             # Update source Ethernet address
             next.src_ether = self.addr

@@ -3,6 +3,7 @@ import simpy
 from src.components.Packet import Packet
 from src.components.addressing.IPAddr import IPAddr
 from src.components.stack.Tables import RouteTable, ArpTable
+from src.utilities import Delays
 from src.utilities.Logger import Logger, Level
 
 
@@ -28,10 +29,17 @@ class IPLayer:
             # Grab the next packet from the queue
             next: Packet = yield self.to_process_queue.get()
 
+            # Queue delay
+            yield self.env.timeout(Delays.IP_QUEUE_DELAY())
+
             # Check/filter the IP address
             if next.dst_ip == self.addr:
                 # Forward the packet to the applications
                 Logger.instance.log(Level.TRACE, f"IP Layer {self.addr} processing packet.")
+
+                # Queue delay
+                yield self.env.timeout(Delays.APP_QUEUE_DELAY())
+
                 self.stack.pass_up_to_app(next)
             else:
                 if not self.router:
@@ -47,6 +55,9 @@ class IPLayer:
         while True:
             # Grab the next packet from the queue
             next: Packet = yield self.to_send_queue.get()
+
+            # Queue delay
+            yield self.env.timeout(Delays.IP_QUEUE_DELAY())
 
             # Attempt to route the packet
             Logger.instance.log(Level.DEBUG, f"IP Layer {self.addr} attempting to route packet for {next.dst_ip}.")
