@@ -20,8 +20,6 @@ class LogServerApp(Application):
         """
 
         self.file = file
-        with open(self.file, "a") as fd:
-            fd.write(f"listener server {node.name} {listen_port}\n")
 
         # Super init
         super().__init__(env, listen_port, node.stack)

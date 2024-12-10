@@ -45,8 +45,6 @@ class Network:
             if node is not source:
                 node.enqueue(p)
     def proc_sample_utilization(self, file):
-        with open(file, "a") as fd:
-            fd.write(f"{self.net_addr} utilization summary \n")
 
         while True:
 
