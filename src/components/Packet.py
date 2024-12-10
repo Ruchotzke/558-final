@@ -24,4 +24,4 @@ class Packet:
         self.msg = msg
 
     def __str__(self):
-        return f"[pkt: {self.msg}: src ->[{self.src_ether},{self.src_ip}], dst->[{self.dst_ether},{self.dst_ip}]]"
+        return f"[pkt: {self.msg}: src ->[{self.src_ether},{self.src_ip},{self.src_port}], dst->[{self.dst_ether},{self.dst_ip},{self.dst_port}]]"

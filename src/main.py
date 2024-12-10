@@ -4,6 +4,7 @@ from src.components.Node import Node
 from src.components.Network import Network
 from src.components.addressing.EthernetAddr import EthernetAddr
 from src.components.addressing.IPAddr import IPAddr
+from src.components.apps.Generator import GeneratorApp
 from src.utilities import RouteGenerator
 from src.utilities.Logger import Logger, Level
 
@@ -44,6 +45,10 @@ N2.stack.set_router(True)
 # Network setup
 nets = [left_net, right_net]
 RouteGenerator.update_routes(nets)
+
+# Install an app
+app = GeneratorApp(env, N1, IPAddr("192.168.0.22"), 22)
+N1.install_app(app)
 
 # Leave gap in the log
 Logger.instance.log(Level.INFO, f"")

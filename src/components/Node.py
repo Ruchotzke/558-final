@@ -6,6 +6,7 @@ import simpy
 from src.components.Packet import Packet
 from src.components.addressing.EthernetAddr import EthernetAddr
 from src.components.addressing.IPAddr import IPAddr
+from src.components.stack.Application import Application
 from src.components.stack.NetStack import NetStack
 from src.components.stack.Tables import RouteEntry
 from src.utilities.Logger import Logger, Level
@@ -59,3 +60,12 @@ class Node:
         entry.direct = True
         self.stack.route_table.insert_entry(entry)
         Logger.instance.log(Level.TRACE, f"Generated new route entry: {entry} to {self.name}")
+
+    def install_app(self, app: Application):
+        """
+        Include an app on this node.
+        :param app:
+        :return:
+        """
+        self.stack.add_app(app.port, app)
+        Logger.instance.log(Level.DEBUG, f"Installed {app.name} on {self.name}")

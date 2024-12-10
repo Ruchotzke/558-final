@@ -12,9 +12,7 @@ class Application:
         self.env = env
         self.stack = binding
         self.port = port
-
-        # Register this application with the stack
-        binding.add_app(port, self)
+        self.name = "default"
 
         # Set up an input and output queue
         self.input = simpy.Store(env)
