@@ -5,6 +5,7 @@ from src.components.Network import Network
 from src.components.addressing.EthernetAddr import EthernetAddr
 from src.components.addressing.IPAddr import IPAddr
 from src.components.apps.Generator import GeneratorApp
+from src.components.apps.Listener import ListenerApp
 from src.utilities import RouteGenerator
 from src.utilities.Logger import Logger, Level
 
@@ -49,10 +50,10 @@ RouteGenerator.update_routes(nets)
 # Install an app
 app = GeneratorApp(env, N1, IPAddr("192.168.1.3"), 22)
 N1.install_app(app)
+app2 = ListenerApp(env, N3, 22)
+N3.install_app(app2)
 
 # Leave gap in the log
-Logger.instance.log(Level.INFO, f"")
-Logger.instance.log(Level.INFO, f"===STARTING SIMULATION===")
-Logger.instance.log(Level.INFO, f"")
+Logger.instance.log_chapter("STARTING SIMULATION")
 
 env.run(until=12)
