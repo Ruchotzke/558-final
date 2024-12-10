@@ -17,6 +17,7 @@ class FQDiscipline(PacketDiscipline):
         super().__init__(file)
         self.left_off = 0
         self.virt_finishes: Dict[Packet, float] = {}
+        self.virt_time = 0.0
 
     def init_flows(self, flows: List[IPAddr], use_default: bool):
         self.use_default = use_default
@@ -36,14 +37,18 @@ class FQDiscipline(PacketDiscipline):
             if flow.match == p.src_ip:
                 # Use this flow
                 flow.queue.append(p)
-                if self.file is not None:
-                    with open(self.file, "a") as fd:
-                        fd.write(f"{self.env.now}, ENQUEUE {flow.match}, {p.length}\n")
 
                 # Handle finish times
-                vir_start = max(self.env.now, flow.properties["vir_fin"])
+                vir_start = max(self.virt_time, flow.properties["vir_fin"])
                 self.virt_finishes[p] = p.length + vir_start
                 flow.properties["vir_fin"] = self.virt_finishes[p]
+
+                if self.virt_finishes[p] == 380:
+                    print("wow")
+
+                if self.file is not None:
+                    with open(self.file, "a") as fd:
+                        fd.write(f"{self.env.now}, ENQUEUE {flow.match}, {p.length}, {self.virt_finishes[p]}\n")
                 return
 
         # If we didn't find a queue, try default
@@ -71,8 +76,9 @@ class FQDiscipline(PacketDiscipline):
                     pkt = self.flows[idx].queue[0]
                     self.flows[idx].queue.pop()
                     self.output_queue.put(pkt)
+                    self.virt_time = max(self.virt_time + pkt.length, self.virt_finishes[pkt])
                     if self.file is not None:
                         with open(self.file, "a") as fd:
-                            fd.write(f"{self.env.now}, DEQUEUE {self.flows[idx].match}, {pkt.length}\n")
+                            fd.write(f"{self.env.now}, ===========DEQUEUE============ {self.flows[idx].match}, {pkt.length}, {self.virt_finishes[pkt]}, {self.virt_time}\n")
             yield self.env.timeout(Delays.ROUND_ROBIN_DELAY())
 
