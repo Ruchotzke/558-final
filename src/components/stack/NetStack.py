@@ -7,6 +7,7 @@ from src.components.Network import Network
 from src.components.Packet import Packet
 from src.components.addressing.EthernetAddr import EthernetAddr
 from src.components.addressing.IPAddr import IPAddr
+from src.components.stack.Application import Application
 from src.components.stack.Ethernet import EthernetLayer
 from src.components.stack.IP import IPLayer
 from src.components.stack.Tables import RouteTable, ArpTable
@@ -16,6 +17,7 @@ from typing import Dict
 # Some types
 ETHER_LAYERS = Dict[Network, EthernetLayer]
 IP_LAYERS = Dict[EthernetLayer, IPLayer]
+APPS = Dict[int, Application]
 
 class NetStack:
     """
@@ -24,11 +26,11 @@ class NetStack:
 
     def __init__(self, env: simpy.Environment):
         self.env = env
-        self.ethers: ETHER_LAYERS = {}    # Map of networks to ethernet layers
-        self.ips: IP_LAYERS = {}       # Map of ethernet layers to IP layers
-        self.apps = []
-        self.route_table = RouteTable() # Route Table
-        self.arp_table = ArpTable()     # ARP Cache
+        self.ethers: ETHER_LAYERS = {}      # Map of networks to ethernet layers
+        self.ips: IP_LAYERS = {}            # Map of ethernet layers to IP layers
+        self.apps: APPS = {}                # Map of ports to apps
+        self.route_table = RouteTable()     # Route Table
+        self.arp_table = ArpTable()         # ARP Cache
 
     def add_ethernet(self, ether: EthernetAddr, net):
         """
@@ -53,6 +55,17 @@ class NetStack:
         layer = IPLayer(self.env, ip, self)
         self.ips[ether_layer] = layer
         return layer
+
+    def add_app(self, port: int, app: Application):
+        """
+        Add a new application to this stack.
+        :param port:
+        :param app:
+        :return:
+        """
+        if port in self.apps:
+            Logger.instance.log(Level.WARNING, f"Overwriting app on port {port} with new application")
+        self.apps[port] = app
 
     def set_router(self, should_route: bool):
         """
