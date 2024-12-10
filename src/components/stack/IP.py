@@ -2,6 +2,7 @@ import simpy
 
 from src.components.Packet import Packet
 from src.components.addressing.IPAddr import IPAddr
+from src.components.disciplines.RoundRobin import RoundRobinDiscipline
 from src.components.stack.Tables import RouteTable, ArpTable
 from src.utilities import Delays
 from src.utilities.Logger import Logger, Level
@@ -18,6 +19,11 @@ class IPLayer:
         self.to_send_queue = simpy.Store(env)       # The output queue
         self.stack = stack              # Network stack
         self.router = False             # Should this layer route packets
+
+        self.discipline = RoundRobinDiscipline()    # The routing discipline
+        self.discipline.init_flows([], True)
+
+        self.discipline.init_proc(env, self.to_send_queue)
         env.process(self.proc_handle_inputs())
         env.process(self.proc_handle_outputs())
 
@@ -48,7 +54,7 @@ class IPLayer:
                 else:
                     # The packet needs to be routed: put it into output queue
                     Logger.instance.log(Level.DEBUG, f"IP Layer {self.addr} moving packet for {next.dst_ip} to output queue.")
-                    self.to_send_queue.put(next)
+                    self.discipline.enqueue_packet(next)
 
 
     def proc_handle_outputs(self):

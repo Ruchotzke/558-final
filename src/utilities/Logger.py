@@ -34,7 +34,7 @@ class Logger:
 
     def log(self, log_level: Level, msg):
         if self.LOG_LEVEL.value >= log_level.value:
-            print(f'[{self.env.now:.2f}] {msg}')
+            print(f'[{self.env.now:.3f}] {msg}')
 
     def log_chapter(self, msg):
         print("")

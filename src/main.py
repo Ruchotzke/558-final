@@ -14,7 +14,7 @@ env = simpy.Environment()
 # Init the logger
 logger = Logger()
 logger.init_instance(env)
-logger.instance.LOG_LEVEL = Level.INFO
+logger.instance.LOG_LEVEL = Level.DEBUG
 
 #
 # Network Vision
