@@ -10,7 +10,7 @@ info = [('s1_1.txt','green','flow 1'),('s1_2.txt','orange','flow 2'),('s1_3.txt'
 
 for i in info:
     # Open the file and read the info out
-    target = os.path.join("..", "..", "runs", "single_equal", i[0])
+    target = os.path.join("..", "..", "runs", "rr_excess", i[0])
     data = pd.read_csv(target,names=['arrival','length','sent','id'])
 
     # Compute each packet's latency
@@ -20,7 +20,7 @@ for i in info:
     # Plot the latency
     plt.scatter(data['arrival'].to_numpy(), latency, s=10, label=i[2], color=i[1])
 
-plt.title("FIFO Latency - No Blockage")
+plt.title("Round Robin Latency - Excess")
 plt.xlabel("Arrival time (s)")
 plt.ylabel("Packet Latency (s)")
 plt.legend()
