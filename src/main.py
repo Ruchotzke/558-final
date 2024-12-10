@@ -19,7 +19,7 @@ env = simpy.Environment()
 # Init the logger
 logger = Logger()
 logger.init_instance(env)
-logger.instance.LOG_LEVEL = Level.DEBUG
+logger.instance.LOG_LEVEL = Level.ERROR
 
 #
 # Network Vision
@@ -67,7 +67,7 @@ S1.add_interface(right_net, EthernetAddr("11:EE:EE:EE:EE:EE"), IPAddr("192.168.1
 S2.add_interface(right_net, EthernetAddr("11:FF:FF:FF:FF:FF"), IPAddr("192.168.1.2"))
 
 # Generate router discipline
-rr = FQDiscipline(os.path.join(base_folder, "discipline"))
+rr = RoundRobinDiscipline(os.path.join(base_folder, "discipline"))
 rr.init_flows([IPAddr("192.168.0.1"), IPAddr("192.168.0.2"), IPAddr("192.168.0.3")], False)
 
 # Generate router
@@ -84,7 +84,7 @@ RouteGenerator.update_routes(nets)
 app = GeneratorApp(env, N1, IPAddr("192.168.1.1"), 1, 1, 100)
 N1.install_app(app)
 
-app = GeneratorApp(env, N2, IPAddr("192.168.1.1"), 50, 0.1, 20)
+app = GeneratorApp(env, N2, IPAddr("192.168.1.1"), 50, 0.2, 20)
 N2.install_app(app)
 
 app = GeneratorApp(env, N3, IPAddr("192.168.1.1"), 100, 2, 200)
@@ -106,4 +106,4 @@ S1.install_app(app2)
 # Leave gap in the log
 Logger.instance.log_chapter("STARTING SIMULATION")
 
-env.run(until=100)
+env.run(until=500)

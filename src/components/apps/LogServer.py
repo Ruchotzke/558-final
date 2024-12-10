@@ -39,4 +39,4 @@ class LogServerApp(Application):
 
             # Log the packet to a file
             with open(self.file, "a") as fd:
-                fd.write(f"{self.env.now},{next.length},{next.msg}\n")
+                fd.write(f"{self.env.now},{next.length},{next.msg},{next.id}\n")

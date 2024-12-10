@@ -16,7 +16,7 @@ class FQDiscipline(PacketDiscipline):
     def __init__(self, file):
         super().__init__(file)
         self.left_off = 0
-        self.virt_finishes: Dict[Packet, float] = {}
+        self.virt_finishes: Dict[int, float] = {}
         self.virt_time = 0.0
 
     def init_flows(self, flows: List[IPAddr], use_default: bool):
@@ -40,15 +40,12 @@ class FQDiscipline(PacketDiscipline):
 
                 # Handle finish times
                 vir_start = max(self.virt_time, flow.properties["vir_fin"])
-                self.virt_finishes[p] = p.length + vir_start
-                flow.properties["vir_fin"] = self.virt_finishes[p]
-
-                if self.virt_finishes[p] == 380:
-                    print("wow")
+                self.virt_finishes[p.id] = p.length + vir_start
+                flow.properties["vir_fin"] = self.virt_finishes[p.id]
 
                 if self.file is not None:
                     with open(self.file, "a") as fd:
-                        fd.write(f"{self.env.now}, ENQUEUE {flow.match}, {p.length}, {self.virt_finishes[p]}\n")
+                        fd.write(f"{self.env.now}, ENQUEUE {flow.match}, {p.length}, {self.virt_finishes[p.id]}\n")
                 return
 
         # If we didn't find a queue, try default
@@ -67,18 +64,20 @@ class FQDiscipline(PacketDiscipline):
                 idx = None
                 for i in range(0, len(self.flows)):
                     if len(self.flows[i].queue) > 0:
-                        if self.virt_finishes[self.flows[i].queue[0]] < min:
-                            min = self.virt_finishes[self.flows[i].queue[0]]
+                        if self.virt_finishes[self.flows[i].queue[0].id] < min:
+                            min = self.virt_finishes[self.flows[i].queue[0].id]
                             idx = i
 
                 # If it exists (it may not), send it
                 if idx is not None:
                     pkt = self.flows[idx].queue[0]
-                    self.flows[idx].queue.pop()
+                    self.flows[idx].queue.pop(0)
                     self.output_queue.put(pkt)
-                    self.virt_time = max(self.virt_time + pkt.length, self.virt_finishes[pkt])
+                    self.virt_time = max(self.virt_time + pkt.length, self.virt_finishes[pkt.id])
+                    if pkt.id == 5:
+                        print("wow")
                     if self.file is not None:
                         with open(self.file, "a") as fd:
-                            fd.write(f"{self.env.now}, ===========DEQUEUE============ {self.flows[idx].match}, {pkt.length}, {self.virt_finishes[pkt]}, {self.virt_time}\n")
+                            fd.write(f"{self.env.now}, ===========DEQUEUE============ {self.flows[idx].match}, {pkt.length}, {self.virt_finishes[pkt.id]}, {self.virt_time}\n")
             yield self.env.timeout(Delays.ROUND_ROBIN_DELAY())
 
