@@ -45,6 +45,9 @@ class EthernetLayer:
             # Await the next packet
             next: Packet = yield self.stack_in_queue.get()
 
+            # Update source Ethernet address
+            next.src_ether = self.addr
+
             # Get a reference to the connected network
             net = self.stack.get_network(self)
 

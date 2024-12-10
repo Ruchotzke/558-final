@@ -19,6 +19,7 @@ ETHER_LAYERS = Dict[Network, EthernetLayer]
 IP_LAYERS = Dict[EthernetLayer, IPLayer]
 APPS = Dict[int, Application]
 
+
 class NetStack:
     """
     A collection of processes representing a host's network stack.
@@ -26,11 +27,11 @@ class NetStack:
 
     def __init__(self, env: simpy.Environment):
         self.env = env
-        self.ethers: ETHER_LAYERS = {}      # Map of networks to ethernet layers
-        self.ips: IP_LAYERS = {}            # Map of ethernet layers to IP layers
-        self.apps: APPS = {}                # Map of ports to apps
-        self.route_table = RouteTable()     # Route Table
-        self.arp_table = ArpTable()         # ARP Cache
+        self.ethers: ETHER_LAYERS = {}  # Map of networks to ethernet layers
+        self.ips: IP_LAYERS = {}  # Map of ethernet layers to IP layers
+        self.apps: APPS = {}  # Map of ports to apps
+        self.route_table = RouteTable()  # Route Table
+        self.arp_table = ArpTable()  # ARP Cache
 
     def add_ethernet(self, ether: EthernetAddr, net):
         """
@@ -77,7 +78,6 @@ class NetStack:
             Logger.instance.log(Level.TRACE, f"Reconfiguring {ip.addr} as router.")
             ip.router = should_route
 
-
     def get_ip_for_ether(self, ether: EthernetAddr):
         """
         Find the corresponding IP address for an Ethernet address
@@ -88,6 +88,30 @@ class NetStack:
             if layer.addr == ether:
                 return self.ips[layer]
         Logger.instance.log(Level.ERROR, f"Unable to map {ether} to an IP address within stack.")
+        return None
+
+    def get_ether_for_ip(self, ip: IPAddr):
+        """
+        Find the corresponding Ethernet interface for an IP address
+        :param ip:
+        :return:
+        """
+        for hw in self.ips.keys():
+            if self.ips[hw].addr == ip:
+                return hw
+        Logger.instance.log(Level.ERROR, f"Unable to map {ip} to an Ethernet address within stack.")
+        return None
+
+    def get_ip(self, ip: IPAddr):
+        """
+        Get the IP layer for a given address.
+        :param ip:
+        :return:
+        """
+        for iface in self.ips.values():
+            if iface.addr == ip:
+                return iface
+        Logger.instance.log(Level.ERROR, f"Unable to map {ip} to an IP address within stack.")
         return None
 
     def get_network(self, layer: EthernetLayer):
@@ -128,3 +152,23 @@ class NetStack:
         # Find the right interface
         Logger.instance.log(Level.TRACE, f"{packet} sent to {iface.addr} for transmission")
         iface.stack_in_queue.put(packet)
+
+    def send(self, p: Packet):
+        """
+        High level send function for sending a packet over the network via an app.
+        :param p:
+        :return:
+        """
+        # find the correct interface to send from
+        hw = self.get_ip(p.src_ip)
+
+        # pass the packet on
+        hw.to_send_queue.put(p)
+
+    def get_default_ip(self):
+        """
+        Get the default IP (first one in interfaces).
+        Useful for apps
+        :return:
+        """
+        return list(self.ips.values())[0].addr

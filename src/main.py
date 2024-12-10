@@ -47,7 +47,7 @@ nets = [left_net, right_net]
 RouteGenerator.update_routes(nets)
 
 # Install an app
-app = GeneratorApp(env, N1, IPAddr("192.168.0.22"), 22)
+app = GeneratorApp(env, N1, IPAddr("192.168.1.3"), 22)
 N1.install_app(app)
 
 # Leave gap in the log

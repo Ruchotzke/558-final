@@ -1,6 +1,7 @@
 import simpy
 
 from src.components.Node import Node
+from src.components.Packet import Packet
 from src.components.addressing.IPAddr import IPAddr
 from src.components.stack.Application import Application
 from src.utilities.Logger import Logger, Level
@@ -33,5 +34,13 @@ class GeneratorApp(Application):
 
     def process(self):
         while True:
+            # Send a packet
+            p = Packet(100, "hello",
+                       None, None,
+                       self.stack.get_default_ip(), self.target_ip,
+                       self.port, self.target_port)
+            self.stack.send(p)
+            Logger.instance.log(Level.INFO, f"generator-client has pushed a packet for {self.target_ip}")
+
+            # Wait for delay
             yield self.env.timeout(self.delay)
-            Logger.instance.log(Level.TRACE, "Hello World")
