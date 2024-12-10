@@ -12,7 +12,8 @@ class GeneratorApp(Application):
     A simple packet generator.
     """
 
-    def __init__(self, env: simpy.Environment, node: Node, ip: IPAddr, target_port: int, delay=3.0):
+    def __init__(self, env: simpy.Environment, node: Node, ip: IPAddr, target_port: int,
+                 delay=3.0, size=100.0):
         """
         Generate a generator app.
         :param env: The simpy environment
@@ -25,6 +26,7 @@ class GeneratorApp(Application):
         self.target_ip = ip
         self.target_port = target_port
         self.delay = delay
+        self.packet_size = size
 
         # Super init
         super().__init__(env, 14311, node.stack)
@@ -35,7 +37,7 @@ class GeneratorApp(Application):
     def process(self):
         while True:
             # Send a packet
-            p = Packet(100, "hello",
+            p = Packet(self.packet_size, f"{self.env.now}",
                        None, None,
                        self.stack.get_default_ip(), self.target_ip,
                        self.port, self.target_port)
