@@ -59,7 +59,7 @@ N3.add_interface(left_net, EthernetAddr("00:33:33:33:33:33"), IPAddr("192.168.0.
 S1 = Node(env, "S1")
 S2 = Node(env, "S2")
 right_net = Network(env, IPAddr("192.168.1.0"))
-right_net.bandwidth = 20
+right_net.bandwidth = 150
 env.process(right_net.proc_sample_utilization(os.path.join(base_folder, "right_net")))
 
 
@@ -67,7 +67,7 @@ S1.add_interface(right_net, EthernetAddr("11:EE:EE:EE:EE:EE"), IPAddr("192.168.1
 S2.add_interface(right_net, EthernetAddr("11:FF:FF:FF:FF:FF"), IPAddr("192.168.1.2"))
 
 # Generate router discipline
-rr = RoundRobinDiscipline(os.path.join(base_folder, "discipline"))
+rr = FQDiscipline(os.path.join(base_folder, "discipline"))
 rr.init_flows([IPAddr("192.168.0.1"), IPAddr("192.168.0.2"), IPAddr("192.168.0.3")], False)
 
 # Generate router
@@ -81,14 +81,14 @@ nets = [left_net, right_net]
 RouteGenerator.update_routes(nets)
 
 # Install apps on nodes
-app = GeneratorApp(env, N1, IPAddr("192.168.1.1"), 1, 0.1, 2000)
+app = GeneratorApp(env, N1, IPAddr("192.168.1.1"), 1, 1, 100)
 N1.install_app(app)
 
-# app = GeneratorApp(env, N2, IPAddr("192.168.1.1"), 50, 0.1, 1000)
-# N2.install_app(app)
-#
-# app = GeneratorApp(env, N3, IPAddr("192.168.1.1"), 100, 1, 1000)
-# N3.install_app(app)
+app = GeneratorApp(env, N2, IPAddr("192.168.1.1"), 50, 0.1, 20)
+N2.install_app(app)
+
+app = GeneratorApp(env, N3, IPAddr("192.168.1.1"), 100, 2, 200)
+N3.install_app(app)
 
 # Generate log server processes
 file = os.path.join(base_folder, "s1_1.txt")
@@ -106,4 +106,4 @@ S1.install_app(app2)
 # Leave gap in the log
 Logger.instance.log_chapter("STARTING SIMULATION")
 
-env.run(until=10)
+env.run(until=100)

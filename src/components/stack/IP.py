@@ -92,4 +92,4 @@ class IPLayer:
 
             # Transmit the packet
             next.dst_ether = arp_entry.ether
-            self.stack.pass_down_to_ether(next, route.iface)
+            yield self.env.process(self.stack.proc_pass_down_to_ether(next, route.iface))

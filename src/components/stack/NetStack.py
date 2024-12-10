@@ -144,16 +144,23 @@ class NetStack:
             return
         self.apps[packet.dst_port].input.put(packet)
 
-    def pass_down_to_ether(self, packet: Packet, iface: EthernetLayer):
+    def proc_pass_down_to_ether(self, packet: Packet, iface: EthernetLayer):
         """
         Pass this packet down to the Ethernet layer to be transmitted.
         :param iface:
         :param packet:
         :return:
         """
-        # Find the right interface
-        Logger.instance.log(Level.TRACE, f"{packet} sent to {iface.addr} for transmission")
-        iface.stack_in_queue.put(packet)
+        while True:
+            # delay until the output queue is empty (on-demand)
+            if len(iface.stack_in_queue.items) == 0:
+                # Find the right interface
+                Logger.instance.log(Level.TRACE, f"{packet} sent to {iface.addr} for transmission")
+                iface.stack_in_queue.put(packet)
+                return
+            # Wait
+            yield self.env.timeout(0.01)
+
 
     def send(self, p: Packet):
         """
