@@ -37,9 +37,11 @@ N3.add_interface(left_net, EthernetAddr("00:33:33:33:33:33"), IPAddr("192.168.0.
 
 # Generate right network
 S1 = Node(env, "S1")
+S2 = Node(env, "S2")
 right_net = Network(env, IPAddr("192.168.1.0"))
 
-S1.add_interface(right_net, EthernetAddr("11:FF:FF:FF:FF:FF"), IPAddr("192.168.1.1"))
+S1.add_interface(right_net, EthernetAddr("11:EE:EE:EE:EE:EE"), IPAddr("192.168.1.1"))
+S2.add_interface(right_net, EthernetAddr("11:FF:FF:FF:FF:FF"), IPAddr("192.168.1.2"))
 
 # Generate router
 R1 = Node(env, "R1")
