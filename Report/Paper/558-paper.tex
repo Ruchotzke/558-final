@@ -358,7 +358,6 @@ Scheduler implementation is based around two functions:
     \begin{itemize}
         \item The process used to handle moving an item to the output
     \end{itemize}
-    \subsection{Measurement Implementation}
 \end{itemize}
 
 Schedulers are defined with an initial set of "flows" (IP-address matched queues) along with a default queue.
@@ -376,6 +375,11 @@ The round robin pseudocode can be found in figure~\ref{fig:rr_impl}, and the fai
 figure~\ref{fig:fq_impl}.
 Note that FIFO was implemented as a round robin queue with zero flows (so all packets went to a default queue).
 This is merely pseudocode; to see the full implementation, check out my open-source \href{https://github.com/Ruchotzke/558-final}{GitHub repository}.
+
+\subsection{Measurement Implementation}
+To measure values for latency and fairness, the logging server was utilized.
+As packets were received after passing through the router, the logging server documented their size, their arrival time, and their departure time.
+This allowed for post-processing and calculation of both latency (difference between departure and arrival time) and fairness (sum of bandwidth).
 
 \begin{figure*}[tbp]
     \begin{lstlisting}
@@ -431,7 +435,21 @@ This is merely pseudocode; to see the full implementation, check out my open-sou
 
 
     \section{Evaluation}
+The following section will go through the setup and evaluation of collected results.
+
     \subsection{Experiment Setup}
+Documentation of the setup was discussed earlier, and can be found in section~\ref{sec:approach}.
+
+The goal for fairness was equal distribution of bandwidth across all three flows, regardless of network state.
+This means that, even as the network became congested, all three flows should have equal allocation of bandwidth.
+To measure this, the logging server was utilized.
+All three input flows had the same bandwidth, just with different packet rates.
+Therefore, fairness could be measured by comparing the packets received at the logging server after passing through the router.
+
+Latency is simpler to measure.
+For each packet that arrives at the target logging server, a delay can be computed by comparing the current time to the departure
+time.
+The packets are categorized by flow, and therefore different flows can have their latencies compared.
 
     \subsection{Results}
 

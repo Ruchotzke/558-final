@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.26 (MiKTeX 24.4) (preloaded format=pdflatex 2024.8.27)  12 DEC 2024 07:37
+This is pdfTeX, Version 3.141592653-2.6-1.40.26 (MiKTeX 24.4) (preloaded format=pdflatex 2024.8.27)  12 DEC 2024 08:26
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -534,27 +534,29 @@ Package pdftex.def Info: ../img/combo.png  used on input line 294.
 
 [3 <../img/test-network.png>]
 
+
+
+[4 <../img/combo.png>]
 LaTeX Font Info:    Trying to load font information for TS1+ptm on input line 3
-84.
+88.
+
 (C:\Users\Rucho\AppData\Local\Programs\MiKTeX\tex/latex/psnfss\ts1ptm.fd
 File: ts1ptm.fd 2001/06/04 font definitions for TS1/ptm.
 )
 LaTeX Font Info:    Trying to load font information for OML+ptm on input line 4
-18.
+22.
 
 (C:\Users\Rucho\AppData\Local\Programs\MiKTeX\tex/latex/psnfss\omlptm.fd
 File: omlptm.fd 
 )
 LaTeX Font Info:    Font shape `OML/ptm/m/n' in size <10> not available
-(Font)              Font shape `OML/cmm/m/it' tried instead on input line 418.
+(Font)              Font shape `OML/cmm/m/it' tried instead on input line 422.
 
-Overfull \hbox (6.00531pt too wide) in paragraph at lines 421--422
+Overfull \hbox (6.00531pt too wide) in paragraph at lines 425--426
 [][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][] 
  []
 
 
-
-[4 <../img/combo.png>]
 (C:/Users\Rucho\OneDrive\Documents\College\cpre558\558-final\auxil\558-paper.bb
 l
 
@@ -599,13 +601,16 @@ L3 programming layer <2024-07-20>
 
 LaTeX Warning: There were undefined references.
 
+
+LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
+
 Package rerunfilecheck Info: File `558-paper.out' has not changed.
 (rerunfilecheck)             Checksum: 4AF3AB1CAC8098195A899349F3A8611A;3618.
  ) 
 Here is how much of TeX's memory you used:
  12977 strings out of 473899
  200726 string characters out of 5726500
- 1967960 words of memory out of 5000000
+ 1979960 words of memory out of 5000000
  35614 multiletter control sequences out of 15000+600000
  596487 words of font info for 109 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
@@ -618,9 +623,9 @@ w/times/utmbi8a.pfb><C:/Users/Rucho/AppData/Local/Programs/MiKTeX/fonts/type1/u
 rw/times/utmr8a.pfb><C:/Users/Rucho/AppData/Local/Programs/MiKTeX/fonts/type1/u
 rw/times/utmri8a.pfb>
 Output written on C:/Users\Rucho\OneDrive\Documents\College\cpre558\558-final\o
-ut\558-paper.pdf (6 pages, 147446 bytes).
+ut\558-paper.pdf (6 pages, 148213 bytes).
 PDF statistics:
- 242 PDF objects out of 1000 (max. 8388607)
+ 243 PDF objects out of 1000 (max. 8388607)
  78 named destinations out of 1000 (max. 500000)
  219 words of extra memory for PDF output out of 10000 (max. 10000000)
 
