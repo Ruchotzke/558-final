@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.26 (MiKTeX 24.4) (preloaded format=pdflatex 2024.8.27)  11 DEC 2024 22:18
+This is pdfTeX, Version 3.141592653-2.6-1.40.26 (MiKTeX 24.4) (preloaded format=pdflatex 2024.8.27)  12 DEC 2024 07:37
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -395,51 +395,79 @@ Package uniquecounter Info: New unique counter `rerunfilecheck' on input line 2
 )
 \Hy@SectionHShift=\skip57
 )
+(C:\Users\Rucho\AppData\Local\Programs\MiKTeX\tex/latex/listings\listings.sty
+\lst@mode=\count303
+\lst@gtempboxa=\box56
+\lst@token=\toks24
+\lst@length=\count304
+\lst@currlwidth=\dimen180
+\lst@column=\count305
+\lst@pos=\count306
+\lst@lostspace=\dimen181
+\lst@width=\dimen182
+\lst@newlines=\count307
+\lst@lineno=\count308
+\lst@maxwidth=\dimen183
+
+(C:\Users\Rucho\AppData\Local\Programs\MiKTeX\tex/latex/listings\lstpatch.sty
+File: lstpatch.sty 2024/05/25 1.10b (Carsten Heinz)
+)
+(C:\Users\Rucho\AppData\Local\Programs\MiKTeX\tex/latex/listings\lstmisc.sty
+File: lstmisc.sty 2024/05/25 1.10b (Carsten Heinz)
+\c@lstnumber=\count309
+\lst@skipnumbers=\count310
+\lst@framebox=\box57
+)
+(C:\Users\Rucho\AppData\Local\Programs\MiKTeX\tex/latex/listings\listings.cfg
+File: listings.cfg 2024/05/25 1.10b listings configuration
+))
+Package: listings 2024/05/25 1.10b (Carsten Heinz)
+
 (C:\Users\Rucho\AppData\Local\Programs\MiKTeX\tex/latex/l3backend\l3backend-pdf
 tex.def
 File: l3backend-pdftex.def 2024-05-08 L3 backend support: PDF output (pdfTeX)
-\l__color_backend_stack_int=\count303
-\l__pdf_internal_box=\box56
+\l__color_backend_stack_int=\count311
+\l__pdf_internal_box=\box58
 )
 (C:/Users\Rucho\OneDrive\Documents\College\cpre558\558-final\auxil\558-paper.au
 x)
 \openout1 = `558-paper.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 14.
-LaTeX Font Info:    ... okay on input line 14.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 14.
-LaTeX Font Info:    ... okay on input line 14.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 14.
-LaTeX Font Info:    ... okay on input line 14.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 14.
-LaTeX Font Info:    ... okay on input line 14.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 14.
-LaTeX Font Info:    ... okay on input line 14.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 14.
-LaTeX Font Info:    ... okay on input line 14.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 14.
-LaTeX Font Info:    ... okay on input line 14.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 14.
-LaTeX Font Info:    ... okay on input line 14.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 14.
-LaTeX Font Info:    ... okay on input line 14.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 15.
+LaTeX Font Info:    ... okay on input line 15.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 15.
+LaTeX Font Info:    ... okay on input line 15.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 15.
+LaTeX Font Info:    ... okay on input line 15.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 15.
+LaTeX Font Info:    ... okay on input line 15.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 15.
+LaTeX Font Info:    ... okay on input line 15.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 15.
+LaTeX Font Info:    ... okay on input line 15.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 15.
+LaTeX Font Info:    ... okay on input line 15.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 15.
+LaTeX Font Info:    ... okay on input line 15.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 15.
+LaTeX Font Info:    ... okay on input line 15.
 
 -- Lines per column: 56 (exact).
 
 (C:\Users\Rucho\AppData\Local\Programs\MiKTeX\tex/context/base/mkii\supp-pdf.mk
 ii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count304
-\scratchdimen=\dimen180
-\scratchbox=\box57
-\nofMPsegments=\count305
-\nofMParguments=\count306
-\everyMPshowfont=\toks24
-\MPscratchCnt=\count307
-\MPscratchDim=\dimen181
-\MPnumerator=\count308
-\makeMPintoPDFobject=\count309
-\everyMPtoPDFconversion=\toks25
+\scratchcounter=\count312
+\scratchdimen=\dimen184
+\scratchbox=\box59
+\nofMPsegments=\count313
+\nofMParguments=\count314
+\everyMPshowfont=\toks25
+\MPscratchCnt=\count315
+\MPscratchDim=\dimen185
+\MPnumerator=\count316
+\makeMPintoPDFobject=\count317
+\everyMPtoPDFconversion=\toks26
 )
 (C:\Users\Rucho\AppData\Local\Programs\MiKTeX\tex/latex/epstopdf-pkg\epstopdf-b
 ase.sty
@@ -451,7 +479,7 @@ Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 4
 fg
 File: epstopdf-sys.cfg 2021/03/18 v2.0 Configuration of epstopdf for MiKTeX
 ))
-Package hyperref Info: Link coloring OFF on input line 14.
+Package hyperref Info: Link coloring OFF on input line 15.
 
 (C:/Users\Rucho\OneDrive\Documents\College\cpre558\558-final\auxil\558-paper.ou
 t)
@@ -460,11 +488,12 @@ t)
 \@outlinefile=\write3
 \openout3 = `558-paper.out'.
 
+\c@lstlisting=\count318
 
 
 
 LaTeX Warning: Citation `arashloo_formal_2023' on page 1 undefined on input lin
-e 99.
+e 100.
 
 
 
@@ -473,13 +502,13 @@ cho/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/base/8r.enc}
 
 
 ]
-LaTeX Font Info:    Trying to load font information for U+msa on input line 118
+LaTeX Font Info:    Trying to load font information for U+msa on input line 119
 .
 
 (C:\Users\Rucho\AppData\Local\Programs\MiKTeX\tex/latex/amsfonts\umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 118
+LaTeX Font Info:    Trying to load font information for U+msb on input line 119
 .
 
 (C:\Users\Rucho\AppData\Local\Programs\MiKTeX\tex/latex/amsfonts\umsb.fd
@@ -492,20 +521,40 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 <../img/test-network.png, id=122, 507.39563pt x 234.8775pt>
 File: ../img/test-network.png Graphic file (type png)
 <use ../img/test-network.png>
-Package pdftex.def Info: ../img/test-network.png  used on input line 213.
+Package pdftex.def Info: ../img/test-network.png  used on input line 214.
 (pdftex.def)             Requested size: 206.39685pt x 95.5406pt.
 
 
 <../img/combo.png, id=125, 283.0575pt x 475.02469pt>
 File: ../img/combo.png Graphic file (type png)
 <use ../img/combo.png>
-Package pdftex.def Info: ../img/combo.png  used on input line 293.
+Package pdftex.def Info: ../img/combo.png  used on input line 294.
 (pdftex.def)             Requested size: 154.80157pt x 259.79297pt.
 
 
 [3 <../img/test-network.png>]
 
+LaTeX Font Info:    Trying to load font information for TS1+ptm on input line 3
+84.
+(C:\Users\Rucho\AppData\Local\Programs\MiKTeX\tex/latex/psnfss\ts1ptm.fd
+File: ts1ptm.fd 2001/06/04 font definitions for TS1/ptm.
+)
+LaTeX Font Info:    Trying to load font information for OML+ptm on input line 4
+18.
 
+(C:\Users\Rucho\AppData\Local\Programs\MiKTeX\tex/latex/psnfss\omlptm.fd
+File: omlptm.fd 
+)
+LaTeX Font Info:    Font shape `OML/ptm/m/n' in size <10> not available
+(Font)              Font shape `OML/cmm/m/it' tried instead on input line 418.
+
+Overfull \hbox (6.00531pt too wide) in paragraph at lines 421--422
+[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+
+[4 <../img/combo.png>]
 (C:/Users\Rucho\OneDrive\Documents\College\cpre558\558-final\auxil\558-paper.bb
 l
 
@@ -535,7 +584,11 @@ Before submitting the final camera ready copy, remember to:
 
 
 
-[4 <../img/combo.png>] [5]
+
+
+[5
+
+] [6]
 (C:/Users\Rucho\OneDrive\Documents\College\cpre558\558-final\auxil\558-paper.au
 x)
  ***********
@@ -550,23 +603,24 @@ Package rerunfilecheck Info: File `558-paper.out' has not changed.
 (rerunfilecheck)             Checksum: 4AF3AB1CAC8098195A899349F3A8611A;3618.
  ) 
 Here is how much of TeX's memory you used:
- 11258 strings out of 473899
- 177289 string characters out of 5726500
- 1948960 words of memory out of 5000000
- 33957 multiletter control sequences out of 15000+600000
- 596173 words of font info for 108 fonts, out of 8000000 for 9000
+ 12977 strings out of 473899
+ 200726 string characters out of 5726500
+ 1967960 words of memory out of 5000000
+ 35614 multiletter control sequences out of 15000+600000
+ 596487 words of font info for 109 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 75i,9n,79p,299b,452s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 75i,9n,79p,299b,1348s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <C:/Users/Rucho/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/
-cmsy7.pfb><C:/Users/Rucho/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/u
-tmb8a.pfb><C:/Users/Rucho/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/u
-tmbi8a.pfb><C:/Users/Rucho/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/
-utmr8a.pfb><C:/Users/Rucho/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/
-utmri8a.pfb>
+cmmi10.pfb><C:/Users/Rucho/AppData/Local/Programs/MiKTeX/fonts/type1/public/ams
+fonts/cm/cmsy7.pfb><C:/Users/Rucho/AppData/Local/Programs/MiKTeX/fonts/type1/ur
+w/times/utmb8a.pfb><C:/Users/Rucho/AppData/Local/Programs/MiKTeX/fonts/type1/ur
+w/times/utmbi8a.pfb><C:/Users/Rucho/AppData/Local/Programs/MiKTeX/fonts/type1/u
+rw/times/utmr8a.pfb><C:/Users/Rucho/AppData/Local/Programs/MiKTeX/fonts/type1/u
+rw/times/utmri8a.pfb>
 Output written on C:/Users\Rucho\OneDrive\Documents\College\cpre558\558-final\o
-ut\558-paper.pdf (5 pages, 123715 bytes).
+ut\558-paper.pdf (6 pages, 147446 bytes).
 PDF statistics:
- 178 PDF objects out of 1000 (max. 8388607)
- 35 named destinations out of 1000 (max. 500000)
+ 242 PDF objects out of 1000 (max. 8388607)
+ 78 named destinations out of 1000 (max. 500000)
  219 words of extra memory for PDF output out of 10000 (max. 10000000)
 

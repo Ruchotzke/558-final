@@ -9,6 +9,7 @@
 \usepackage{textcomp}
 \usepackage{xcolor}
 \usepackage{hyperref}
+\usepackage{listings}
 
 
 \begin{document}
@@ -342,8 +343,92 @@ Each arrival time is documented, along with source, send time, and size; this in
 From these raw values, most important properties can be computed, like latency, jitter, fairness and more.
 
     \subsection{Scheduler Implementation}
+The core of the implementation for this project was the implementation of the packet schedulers; alternatively, I referred
+to these as disciplines, as they were different ways of scheduling packets.
+The schedulers lie within the implementation of the IP layer.
+A scheduler is straightforward: packets are enqueued to it, and it decides how to dequeue packets from its input queues.
 
+Scheduler implementation is based around two functions:
+\begin{itemize}
+    \item $enqueue\_packet$
+    \begin{itemize}
+        \item Enqueues a supplied packet to one of the input queues.
+    \end{itemize}
+    \item $proc\_handle\_disc$
+    \begin{itemize}
+        \item The process used to handle moving an item to the output
+    \end{itemize}
     \subsection{Measurement Implementation}
+\end{itemize}
+
+Schedulers are defined with an initial set of "flows" (IP-address matched queues) along with a default queue.
+As packets are enqueued, they are sorted into one of these flows.
+
+Dequeueing the packet is a bit more complicated.
+Important here is the fact that we want to wait until the Ethernet layer demands a packet to supply one.
+This is because we're interested in the timing/behavior of the scheduler under load.
+If we simply immediately dequeue packets when available, our scheduler will never fill up, and never utilize advanced
+behaviors.
+To accomplish this, we simply wait until the Ethernet layer's input queue is empty before dequeueing a packet into it.
+
+The pseudocode for the algorithms has been provided in two figures.
+The round robin pseudocode can be found in figure~\ref{fig:rr_impl}, and the fair queue pseudocode can be found in
+figure~\ref{fig:fq_impl}.
+Note that FIFO was implemented as a round robin queue with zero flows (so all packets went to a default queue).
+This is merely pseudocode; to see the full implementation, check out my open-source \href{https://github.com/Ruchotzke/558-final}{GitHub repository}.
+
+\begin{figure*}[tbp]
+    \begin{lstlisting}
+    handle_rr():
+        While True:
+            # Check the output queue and make sure it is empty (on-demand dequeue)
+            if output_queue.items == 0:
+                # Iterate through all queues, starting from the last we emptied
+                for i in range(0, flows):
+                    j = (i + prev_pos) % len(flows)
+                    if flows[j] is not empty:
+                        dequeue from flow j
+                        save position
+            # Poll Delay
+            wait 0.001s
+    \end{lstlisting}
+    \caption{Round Robin Implementation}
+    \label{fig:rr_impl}
+\end{figure*}
+
+\begin{figure*}[tbp]
+    \begin{lstlisting}
+    enqueue_packet(pkt):
+        # Find the corresponding flow
+        flow = matching_flow(pkt)
+
+        # Handle finish time
+        vir_start = max(self.virt_time, flow.vir_finish)
+        pkt.finish_time = pkt.len + vir_start
+        flow.vir_finish = pkt.finish_time
+        flow.enqueue(pkt)
+
+    handle_fq():
+        While True:
+            # Check the output queue and make sure it is empty (on-demand dequeue)
+            if output_queue.items == 0:
+                # Find the packet with the next smallest finish time
+                min_finish = infinity
+                for each flow:
+                    if flow[0].finish_time < min_finish:
+                        save flow
+
+                # If we found a flow (queues may be empty) dequeue and update virt time
+                if flow is not null:
+                    dequeue flow[0]
+                    virt_time = max(virt_time + flow[0].len, flow[0].finish_time)
+            # Poll Delay
+            wait 0.001s
+    \end{lstlisting}
+    \caption{Fair Queue Implementation}
+    \label{fig:fq_impl}
+\end{figure*}
+
 
     \section{Evaluation}
     \subsection{Experiment Setup}

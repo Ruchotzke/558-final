@@ -74,8 +74,6 @@ class FQDiscipline(PacketDiscipline):
                     self.flows[idx].queue.pop(0)
                     self.output_queue.put(pkt)
                     self.virt_time = max(self.virt_time + pkt.length, self.virt_finishes[pkt.id])
-                    if pkt.id == 5:
-                        print("wow")
                     if self.file is not None:
                         with open(self.file, "a") as fd:
                             fd.write(f"{self.env.now}, ===========DEQUEUE============ {self.flows[idx].match}, {pkt.length}, {self.virt_finishes[pkt.id]}, {self.virt_time}\n")
