@@ -325,7 +325,7 @@ This is where the simulation events are driven; some applications (clients) gene
 consume and document it.
 More about applications will follow in the next section.
 
-    \subsubsection{Applications}
+    \subsubsection{Applications} \label{subsubsec:apps}
 Applications are responsible for the generation and logging of packets.
 This is the driver of the whole simulation (setting up flows) but also for the monitoring (logging received packets).
 In my simulation, I designed two applications.
@@ -432,7 +432,7 @@ This allowed for post-processing and calculation of both latency (difference bet
     \caption{Fair Queue Implementation}
     \label{fig:fq_impl}
 \end{figure*}
-
+\clearpage
 
     \section{Evaluation}
 The following section will go through the setup and evaluation of collected results.
@@ -451,13 +451,115 @@ For each packet that arrives at the target logging server, a delay can be comput
 time.
 The packets are categorized by flow, and therefore different flows can have their latencies compared.
 
-    \subsection{Results}
+    \subsection{Results} \label{subsec:results}
+This section will document the results gathered during experimentation.
 
     \subsubsection{Fairness}
+The first metric measured was fairness.
+Fairness is the ability for the queue system to treat flows in an equal manner (or a max-min manner, for weighted flows).
+In this case, because all three flows have the same bandwidth requirement and weight, we can assume they would be sending
+equivalent total amounts of bytes.
+
+To measure this, a logging server was used, as discussed in section~\ref{subsubsec:apps}.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.4\textwidth]{../img/fairness_bar}
+    \caption{Received bytes vs packet flow for three schedulers}
+    \label{fig:fairness_bar}
+\end{figure}
+
+Figure~\ref{fig:fairness_bar} shows the results, which were interesting.
+First, one can see the clear downside of round-robin scheduling.
+In the case of different packet sizes, the algorithm is wildly unfair to services using smaller packets.
+However, another interesting result is that the FIFO queue (single input, single output) is more or less equivalent to
+the fair queue implementation for this test case.
+
+This was not expected, and I found it very interesting.
+My personal understanding is that these are similar because we aren't worried about priority.
+Our virtual start/end times are directly correlated with the arrival of the packets.
+Therefore, the fair queue essentially ends up modeling a FIFO queue.
+
+This could be a useful observation; fair queueing is significantly more complicated than FIFO, and someone attempting to
+implement a scheduler for non-weighted flows with similar bandwidth expectations may simply need a queue.
 
     \subsubsection{Latency}
+I divided the latency results into three categories: congested, equal bandwidth, and excess bandwidth.
+
+The congested network was designed by restricting the output bandwidth of the router.
+In essence, this allowed us to fill the queues of the router, leading to more information about how the router behaves
+under high loads.
+This was how the fairness was measured.
+
+When it came to latency, a congested queue treated both FIFO and fair queueing equally again.
+As expected, as the queues became fuller, the latency of the packets increased.
+Without additional control flow, this is an unavoidable condition; early dropping of packets is needed to mitigate this.
+Proof of this result can be found in figure~\ref{fig:fifo_cong}.
+
+Figure~\ref{fig:rr_cong} shows the results with round robin scheduling.
+For round robin, the flows each experienced different latencies.
+As expected, the queue which was able to push the most data (flow 3) had the lowest gain in latency over time, as its
+queue moved the fastest.
+In contrast, flow 2, with many small packets, experienced large increases in latency.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.4\textwidth]{../img/fifo_latency}
+    \caption{FIFO latency for all three flows. Equivalent to FQ.}
+    \label{fig:fifo_cong}
+\end{figure}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.4\textwidth]{../img/rr_latency}
+    \caption{Round robin latency for all three flows.}
+    \label{fig:rr_cong}
+\end{figure}
+
+After experimentation, it turned out there was not a difference between the results for excess/equal bandwidth.
+Thinking further, this makes sense, as in both cases the queues are remaining near-empty.
+Once again, FIFO and FQ were equivalent.
+However, when it came to round robin, the expectation I had was subverted.
+
+For round robin, I assumed that, even when bandwidth was in excess, there would be no queueing, and therefore no impact
+on latency.
+This was not the case.
+Instead, while the other two flows were fairly consistent at near-zero latency, flow 2 (many small packets) became
+backed up.
+Evidence of this can be found in figure~\ref{fig:rr_exc}.
+
+This is a strange result, and I am not sure why it happened.
+I assume this must imply that, because there are delays within the network stack (overhead on a per-packet basis),
+the packets were simply arriving faster than they could be dequeued due to both network and internal stack delays.
+This was a really interesting result.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.4\textwidth]{../img/rr_excess}
+    \caption{Round robin latency for all three flows.}
+    \label{fig:rr_exc}
+\end{figure}
+
 
     \section{Conclusions}
+Overall, I found the results of this project interesting.
+It went in multiple directions I neer would have expected.
+
+First off, I was expecting to be able to use a heavyweight network simulator, like NS-3, to perform the bulk of the
+simulation.
+However, after working with it, I found it was fairly difficult to edit some elements related to traffic shaping and queueing.
+Instead, writing my own simulator was extremely rewarding and allowed me to simulate the parts of the project I was
+interested in.
+
+Then the results themselves had some interesting pieces. \label{sec:conclusions}
+I found it fascinating that the fair queue and FIFO queue were nearly identical in terms of performance, as I would have
+expected the FIFO to underperform its actual results.
+Additionally, the difference in latency between flow 2 and the other flows, even in the presence of extra bandwidth,
+was a result I was not expecting.
+
+This project was an interesting delve into some real-time networking topics.
+I hope to continue extending this simulator (and potentially expanding it to real-time LAN protocols discussed in class
+at the end).
 
     \section{Self Assessment}
     See self assessment in table~\ref{tab:self-assmt}.
@@ -477,9 +579,9 @@ The packets are categorized by flow, and therefore different flows can have thei
             \hline
             Adequate description of the implementation details & Fully Completed & Section~\ref{sec:impl} (entire section)\\
             \hline
-            Testing and evaluation - test cases, metrics, performance & Fully Completed & \\
+            Testing and evaluation - test cases, metrics, performance & Fully Completed & Section~\ref{subsec:results}\\
             \hline
-            Overall project success assessment & Fully Completed & \\
+            Overall project success assessment & Fully Completed & Starting at section~\ref{sec:conclusions}\\
             \hline
         \end{tabular}
 

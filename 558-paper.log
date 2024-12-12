@@ -1,13 +1,12 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.26 (MiKTeX 24.4) (preloaded format=pdflatex 2024.8.27)  12 DEC 2024 15:00
+This is pdfTeX, Version 3.141592653-2.6-1.40.26 (MiKTeX 24.4) (preloaded format=pdflatex 2024.8.27)  12 DEC 2024 14:59
 entering extended mode
  restricted \write18 enabled.
- file:line:error style messages enabled.
  %&-line parsing enabled.
-**./558-paper.tex
-(558-paper.tex
+**./Report/Paper/558-paper.tex
+(Report/Paper/558-paper.tex
 LaTeX2e <2024-06-01> patch level 2
 L3 programming layer <2024-07-20>
-(IEEEtran.cls
+(C:\Users\Rucho\AppData\Local\Programs\MiKTeX\tex/latex/ieeetran\IEEEtran.cls
 Document Class: IEEEtran 2015/08/26 V1.8b by Michael Shell
 -- See the "IEEEtran_HOWTO" manual for usage information.
 -- http://www.michaelshell.org/tex/ieeetran/
@@ -428,7 +427,8 @@ tex.def
 File: l3backend-pdftex.def 2024-05-08 L3 backend support: PDF output (pdfTeX)
 \l__color_backend_stack_int=\count311
 \l__pdf_internal_box=\box58
-) (558-paper.aux)
+)
+No file 558-paper.aux.
 \openout1 = `558-paper.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 15.
@@ -449,7 +449,6 @@ LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 15.
 LaTeX Font Info:    ... okay on input line 15.
 LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 15.
 LaTeX Font Info:    ... okay on input line 15.
-
 -- Lines per column: 56 (exact).
 
 (C:\Users\Rucho\AppData\Local\Programs\MiKTeX\tex/context/base/mkii\supp-pdf.mk
@@ -478,7 +477,6 @@ fg
 File: epstopdf-sys.cfg 2021/03/18 v2.0 Configuration of epstopdf for MiKTeX
 ))
 Package hyperref Info: Link coloring OFF on input line 15.
- (558-paper.out) (558-paper.out)
 \@outlinefile=\write3
 \openout3 = `558-paper.out'.
 
@@ -512,146 +510,36 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 
 
 [2]
-<../img/test-network.png, id=118, 507.39563pt x 234.8775pt>
-File: ../img/test-network.png Graphic file (type png)
-<use ../img/test-network.png>
-Package pdftex.def Info: ../img/test-network.png  used on input line 214.
-(pdftex.def)             Requested size: 206.39685pt x 95.5406pt.
+
+LaTeX Warning: Reference `fig:test-net' on page 3 undefined on input line 210.
 
 
-<../img/combo.png, id=121, 283.0575pt x 475.02469pt>
-File: ../img/combo.png Graphic file (type png)
-<use ../img/combo.png>
-Package pdftex.def Info: ../img/combo.png  used on input line 294.
-(pdftex.def)             Requested size: 154.80157pt x 259.79297pt.
-
-
-[3 <../img/test-network.png>]
-
-
-
-[4 <../img/combo.png>]
-LaTeX Font Info:    Trying to load font information for TS1+ptm on input line 3
-88.
-
-(C:\Users\Rucho\AppData\Local\Programs\MiKTeX\tex/latex/psnfss\ts1ptm.fd
-File: ts1ptm.fd 2001/06/04 font definitions for TS1/ptm.
-)
-LaTeX Font Info:    Trying to load font information for OML+ptm on input line 4
-22.
-
-(C:\Users\Rucho\AppData\Local\Programs\MiKTeX\tex/latex/psnfss\omlptm.fd
-File: omlptm.fd 
-)
-LaTeX Font Info:    Font shape `OML/ptm/m/n' in size <10> not available
-(Font)              Font shape `OML/cmm/m/it' tried instead on input line 422.
-
-Overfull \hbox (6.00531pt too wide) in paragraph at lines 425--426
-[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][] 
- []
-
-
-
-
-
-[5
-
-] [6]
-<../img/fairness_bar.png, id=190, 642.4pt x 481.8pt>
-File: ../img/fairness_bar.png Graphic file (type png)
-<use ../img/fairness_bar.png>
-Package pdftex.def Info: ../img/fairness_bar.png  used on input line 467.
-(pdftex.def)             Requested size: 206.39685pt x 154.79668pt.
-
-
-<../img/fifo_latency.png, id=194, 1505.625pt x 1505.625pt>
-File: ../img/fifo_latency.png Graphic file (type png)
-<use ../img/fifo_latency.png>
-Package pdftex.def Info: ../img/fifo_latency.png  used on input line 507.
-(pdftex.def)             Requested size: 206.39685pt x 206.39804pt.
-<../img/rr_latency.png, id=195, 1505.625pt x 1505.625pt>
-File: ../img/rr_latency.png Graphic file (type png)
-<use ../img/rr_latency.png>
-Package pdftex.def Info: ../img/rr_latency.png  used on input line 514.
-(pdftex.def)             Requested size: 206.39685pt x 206.39804pt.
-
-
-[7
-
-
- <../img/fairness_bar.png (PNG copy)> <../img/fifo_latency.png (PNG copy)>]
-<../img/rr_excess.png, id=205, 1505.625pt x 1505.625pt>
-File: ../img/rr_excess.png Graphic file (type png)
-<use ../img/rr_excess.png>
-Package pdftex.def Info: ../img/rr_excess.png  used on input line 538.
-(pdftex.def)             Requested size: 206.39685pt x 206.39804pt.
-
-Underfull \vbox (badness 5490) has occurred while \output is active []
-
-
-
-
-(C:/Users\Rucho\OneDrive\Documents\College\cpre558\558-final\auxil\558-paper.bb
-l
-
-C:/Users\Rucho\OneDrive\Documents\College\cpre558\558-final\auxil\558-paper.bbl
-:3: LaTeX Error: Something's wrong--perhaps a missing \item.
+! LaTeX Error: File `../img/test-network' not found.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.3 \end{thebibliography}
-                         
+l.214 ...width=0.4\textwidth]{../img/test-network}
+                                                  
+? 
+! Emergency stop.
+ ...                                              
+                                                  
+l.214 ...width=0.4\textwidth]{../img/test-network}
+                                                  
+I could not locate the file with any of these extensions:
+.pdf,.png,.jpg,.mps,.jpeg,.jbig2,.jb2,.PDF,.PNG,.JPG,.JPEG,.JBIG2,.JB2,.eps
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-)
-
-** Conference Paper **
-Before submitting the final camera ready copy, remember to:
-
- 1. Manually equalize the lengths of two columns on the last page
- of your paper;
-
- 2. Ensure that any PostScript and/or PDF output post-processing
- uses only Type 1 fonts and that every step in the generation
- process uses the appropriate paper size.
-
-
-
-[8 <../img/rr_latency.png (PNG copy)> <../img/rr_excess.png (PNG copy)>]
-[9] (558-paper.aux)
- ***********
-LaTeX2e <2024-06-01> patch level 2
-L3 programming layer <2024-07-20>
- ***********
-
-
-LaTeX Warning: There were undefined references.
-
-Package rerunfilecheck Info: File `558-paper.out' has not changed.
-(rerunfilecheck)             Checksum: 92E87975F77E944AA275F4DCD5D3A90F;3523.
- ) 
+ 
 Here is how much of TeX's memory you used:
- 13032 strings out of 473899
- 201815 string characters out of 5726500
- 1975960 words of memory out of 5000000
- 35662 multiletter control sequences out of 15000+600000
- 596487 words of font info for 109 fonts, out of 8000000 for 9000
+ 12528 strings out of 473899
+ 195396 string characters out of 5726500
+ 1948960 words of memory out of 5000000
+ 35258 multiletter control sequences out of 15000+600000
+ 590242 words of font info for 93 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 75i,9n,79p,299b,1348s stack positions out of 10000i,1000n,20000p,200000b,200000s
-<C:/Users/Rucho/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/
-cmmi10.pfb><C:/Users/Rucho/AppData/Local/Programs/MiKTeX/fonts/type1/public/ams
-fonts/cm/cmsy7.pfb><C:/Users/Rucho/AppData/Local/Programs/MiKTeX/fonts/type1/ur
-w/times/utmb8a.pfb><C:/Users/Rucho/AppData/Local/Programs/MiKTeX/fonts/type1/ur
-w/times/utmbi8a.pfb><C:/Users/Rucho/AppData/Local/Programs/MiKTeX/fonts/type1/u
-rw/times/utmr8a.pfb><C:/Users/Rucho/AppData/Local/Programs/MiKTeX/fonts/type1/u
-rw/times/utmri8a.pfb>
-Output written on C:/Users\Rucho\OneDrive\Documents\College\cpre558\558-final\o
-ut\558-paper.pdf (9 pages, 437035 bytes).
-PDF statistics:
- 269 PDF objects out of 1000 (max. 8388607)
- 85 named destinations out of 1000 (max. 500000)
- 231 words of extra memory for PDF output out of 10000 (max. 10000000)
-
+ 75i,8n,79p,271b,441s stack positions out of 10000i,1000n,20000p,200000b,200000s
+!  ==> Fatal error occurred, no output PDF file produced!
